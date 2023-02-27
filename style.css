@@ -23,7 +23,7 @@ main  {
   display: grid;
   justify-self: start;
   align-self: end;
-  padding: 0 0 10px 5px;
+  padding: 0 0 15px 5px;
 }
 
 .m-home h2 {
