@@ -22,8 +22,8 @@ main  {
 .m-container {
   display: grid;
   justify-self: start;
-  align-self: end;
-  padding: 0 0 3% 5px;
+  justify-self: start;
+  padding: 0 0 0 5px;
 }
 
 .m-home h2 {
