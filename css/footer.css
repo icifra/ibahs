@@ -1,0 +1,140 @@
+footer {
+  background-color: rgba(221, 221, 221, 0.005);
+  padding: 10px;
+  border-radius: 20px;
+  border: 3px solid rgba(221, 221, 221, 0.005);
+  background-clip: padding-box;
+}
+
+  .f-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(1fr));
+    grid-auto-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin: 0 auto;
+    max-width: calc(100% - 10px);
+  }
+
+    .f-version {
+      display: grid;
+      font-size: 18px;
+    }
+
+      .f-version p {
+        /* font-weight: bold; */
+        color: #BB2649;
+
+      }
+
+    .f-icons {
+      display: grid;
+      grid-auto-flow: column;
+      gap: 15px;
+    }
+
+      .f-icons a i {
+        color: #BB2649;
+        font-size: 24px;
+    }   
+
+    .f-copy {
+      display: grid;
+    }
+
+      .f-copy p {
+        /* font-weight: bold; */
+        color: #BB2649;
+        font-size: 18px;
+      }
+    
+      @media screen and (max-width: 575px) {
+        .f-icons {
+          gap: 10px;
+        }
+      
+        .f-icons a i {
+          font-size: 20px;
+        }
+
+        .f-copy p {
+          font-size: 14px;
+        }
+
+        .f-version p {
+          font-size: 14px;
+        }
+      }
+      
+      @media screen and (min-width: 576px) and (max-width: 767px) {
+        .f-icons {
+          gap: 12px;
+        }
+      
+        .f-icons a i {
+          font-size: 22px;
+        }
+
+        .f-copy p {
+          font-size: 15px;
+        }
+
+        .f-version p {
+          font-size: 15px;
+        }
+      }
+      
+      @media screen and (min-width: 768px) and (max-width: 991px) {
+        .f-icons {
+          gap: 14px;
+        }
+      
+        .f-icons a i {
+          font-size: 22px;
+        }
+
+        .f-copy p {
+          font-size: 16px;
+        }
+
+        .f-version p {
+          font-size: 16px;
+        }
+      }
+      
+      @media screen and (min-width: 992px) and (max-width: 1199px) {
+        .f-icons {
+          gap: 16px;
+        }
+      
+        .f-icons a i {
+          font-size: 24px;
+        }
+
+        .f-copy p {
+          font-size: 17px;
+        }
+
+        .f-version p {
+          font-size: 17px;
+        }
+      }
+      
+      @media screen and (min-width: 1200px) {
+        .f-icons {
+          gap: 16px;
+        }
+      
+        .f-icons a i {
+          font-size: 24px;
+        }
+
+        .f-copy p {
+          font-size: 18px;
+        }
+
+        .f-version p {
+          font-size: 18px;
+        }
+      }  
