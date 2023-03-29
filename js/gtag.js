@@ -1,4 +1,3 @@
-// Функция для загрузки скрипта gtag
 function loadGtagScript() {
   if (!window.gtagScriptLoaded) {
     var script = document.createElement('script');
