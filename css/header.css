@@ -18,9 +18,10 @@ header {
   }
 
       .h-logo img {
+        display: block;
         max-width: 100px;
         height: auto;
-        pointer-events: none;
+/*         pointer-events: none; */
       }
 
         .h-logo img.rotate {
