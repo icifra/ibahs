@@ -7,7 +7,7 @@ body {
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
   background-color: rgba(42, 42, 42, 1);
 }
 
