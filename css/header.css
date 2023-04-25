@@ -45,37 +45,37 @@ header {
 
         @media screen and (max-width: 575px) {
           .h-logo img {
-            width: 44.8px;
+            width: 42.88px;
           }
           .h-name h1 {
-            font-size: 25.2px;
+            font-size: 24.12px;
           }
         }
 
         @media screen and (min-width: 576px) and (max-width: 767px) {
           .h-logo img {
-            width: 50.5px;
+            width: 48.16px;
           }
           .h-name h1 {
-            font-size: 28.5px;
+            font-size: 27.09px;
           }
         }
 
         @media screen and (min-width: 768px) and (max-width: 991px) {
           .h-logo img {
-            width: 55.9px;
+            width: 53.44px;
           }
           .h-name h1 {
-            font-size: 31.6px;
+            font-size: 30.06px;
           }
         }
 
         @media screen and (min-width: 992px) and (max-width: 1199px) {
           .h-logo img {
-            width: 60.3px;
+            width: 58.78px;
           }
           .h-name h1 {
-            font-size: 34.1px;
+            font-size: 33.03px;
           }
         }
 
