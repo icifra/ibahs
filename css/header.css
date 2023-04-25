@@ -36,69 +36,54 @@ header {
           }
         }
 
-      @media screen and (max-width: 575px) {
-        .h-logo img {
-          width: 48px;
-        }
-      }
-      
-      @media screen and (min-width: 576px) and (max-width: 767px) {
-        .h-logo img {
-          width: 54px;
-        }
-      }
-      
-      @media screen and (min-width: 768px) and (max-width: 991px) {
-        .h-logo img {
-          width: 72px;
-        }
-      }
-      
-      @media screen and (min-width: 992px) and (max-width: 1199px) {
-        .h-logo img {
-          width: 81.6px;
-        }
-      }
-      
-      @media screen and (min-width: 1200px) {
-        .h-logo img {
-          width: 85px;
-        }
-      }
-    
-    .h-name h1 {
-      font-size: 36px;
-      font-weight: 500;
-      color: #FFFFFF;
-      margin: 0;
-    }
-    
-    @media screen and (max-width: 575px) {
-      .h-name h1 {
-        font-size: 24px;
-      }
-    }
-    
-    @media screen and (min-width: 576px) and (max-width: 767px) {
-      .h-name h1 {
-        font-size: 28px;
-      }
-    }
-    
-    @media screen and (min-width: 768px) and (max-width: 991px) {
-      .h-name h1 {
-        font-size: 30px;
-      }
-    }
-    
-    @media screen and (min-width: 992px) and (max-width: 1199px) {
-      .h-name h1 {
-        font-size: 33px;
-      }
-    }
-    
-    @media screen and (min-width: 1200px) {
       .h-name h1 {
         font-size: 36px;
+        font-weight: 500;
+        color: #FFFFFF;
+        margin: 0;
       }
-    }
+
+        @media screen and (max-width: 575px) {
+          .h-logo img {
+            width: 44.8px;
+          }
+          .h-name h1 {
+            font-size: 25.2px;
+          }
+        }
+
+        @media screen and (min-width: 576px) and (max-width: 767px) {
+          .h-logo img {
+            width: 50.5px;
+          }
+          .h-name h1 {
+            font-size: 28.5px;
+          }
+        }
+
+        @media screen and (min-width: 768px) and (max-width: 991px) {
+          .h-logo img {
+            width: 55.9px;
+          }
+          .h-name h1 {
+            font-size: 31.6px;
+          }
+        }
+
+        @media screen and (min-width: 992px) and (max-width: 1199px) {
+          .h-logo img {
+            width: 60.3px;
+          }
+          .h-name h1 {
+            font-size: 34.1px;
+          }
+        }
+
+        @media screen and (min-width: 1200px) {
+          .h-logo img {
+            width: 64px;
+          }
+          .h-name h1 {
+            font-size: 36px;
+          }
+        }
