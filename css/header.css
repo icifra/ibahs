@@ -70,7 +70,8 @@ header {
     .h-name h1 {
       font-size: 36px;
       font-weight: 500;
-      color: #BB2649;;
+      color: #BB2649;
+      margin: 0;
     }
     
     @media screen and (max-width: 575px) {
