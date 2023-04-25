@@ -14,7 +14,6 @@ footer {
     align-items: center;
     gap: 10px;
     margin: 0 auto;
-    max-width: calc(100% - 10px);
   }
 
     .f-version {
@@ -24,7 +23,7 @@ footer {
 
       .f-version p {
         /* font-weight: bold; */
-        color: #BB2649;
+        color: #FFFFFF;
 
       }
 
@@ -35,7 +34,7 @@ footer {
     }
 
       .f-icons a i {
-        color: #BB2649;
+        color: #FFFFFF;
         font-size: 24px;
     }   
 
@@ -45,7 +44,7 @@ footer {
 
       .f-copy p {
         /* font-weight: bold; */
-        color: #BB2649;
+        color: #FFFFFF;
         font-size: 18px;
       }
     
