@@ -14,7 +14,6 @@ header {
     align-items: center;
     gap: 10px;
     margin: 0 auto;
-    max-width: calc(100% - 10px);
   }
 
       .h-logo img {
@@ -70,7 +69,7 @@ header {
     .h-name h1 {
       font-size: 36px;
       font-weight: 500;
-      color: #BB2649;
+      color: #FFFFF;
       margin: 0;
     }
     
