@@ -50,6 +50,9 @@ header {
           .h-name h1 {
             font-size: 24.12px;
           }
+          .h-container {
+            gap: 6.7px;
+          }
         }
 
         @media screen and (min-width: 576px) and (max-width: 767px) {
@@ -58,6 +61,9 @@ header {
           }
           .h-name h1 {
             font-size: 27.09px;
+          }
+          .h-container {
+            gap: 7.52px;
           }
         }
 
@@ -68,6 +74,9 @@ header {
           .h-name h1 {
             font-size: 30.06px;
           }
+          .h-container {
+            gap: 8.35px;
+          }
         }
 
         @media screen and (min-width: 992px) and (max-width: 1199px) {
@@ -76,6 +85,9 @@ header {
           }
           .h-name h1 {
             font-size: 33.03px;
+          }
+          .h-container {
+            gap: 9.17px;
           }
         }
 
