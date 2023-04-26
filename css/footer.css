@@ -8,29 +8,22 @@ footer {
 
   .f-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(1fr));
+    grid-template-columns: auto auto auto;
     grid-auto-flow: column;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    margin: 0 auto;
   }
 
-    .f-version {
-      display: grid;
-      font-size: 18px;
-    }
-
       .f-version p {
-        /* font-weight: bold; */
+        font-size: 18px;
         color: #FFFFFF;
-
       }
 
     .f-icons {
       display: grid;
       grid-auto-flow: column;
-      gap: 15px;
+      gap: 16px;
     }
 
       .f-icons a i {
@@ -38,12 +31,7 @@ footer {
         font-size: 24px;
     }   
 
-    .f-copy {
-      display: grid;
-    }
-
       .f-copy p {
-        /* font-weight: bold; */
         color: #FFFFFF;
         font-size: 18px;
       }
