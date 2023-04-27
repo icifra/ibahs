@@ -32,7 +32,7 @@ main  {
   display: grid;
   justify-self: start;
   align-self: end;
-  padding: 0 0 5% 0;
+  padding: 0 0 55px 0;
 }
 
 .m-home h2 {
