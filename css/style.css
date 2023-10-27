@@ -14,7 +14,7 @@ body {
   display: grid;
   grid-template-rows: auto 1fr auto;
   font-family: 'Arimo', sans-serif;
-  background-color: rgba(42, 42, 42, 1);
+  background-color: rgba(16, 16, 16, 1);
 }
 
 main  {
