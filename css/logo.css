@@ -1,0 +1,9 @@
+/* Определение анимации вращения */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(1080deg); } /* 3 оборота */
+}
+/* Применение анимации к элементам с классом rotate */
+.rotate {
+    animation: spin 8s linear;
+}

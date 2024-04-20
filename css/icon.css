@@ -1,0 +1,21 @@
+@keyframes heartbeat {
+    0% {
+        transform: scale(1); /* Начинаем с исходного размера */
+    }
+    25% {
+        transform: scale(1.4); /* Увеличиваем размер на 30% */
+    }
+    50% {
+        transform: scale(1);
+    }
+    75% {
+        transform: scale(1.4);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.heartbeat {
+    animation: heartbeat 4s infinite;
+}
