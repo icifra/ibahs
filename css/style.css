@@ -2,8 +2,12 @@ body {
     /* Base structure */
     font-family: 'Arimo', sans-serif;
 
-    /* Show it is navbar fixed to the top 
+    /* Верхний отступ к элементу <body> 
+    */
+    padding-top: 4.5rem;
+
+    /* Минимальная высота при закреплении footer 
     */
     min-height: 75rem;
-    padding-top: 4.5rem;
 }
+
