@@ -1,6 +1,7 @@
 body {
     /* Base structure */
     font-family: 'Arimo', sans-serif;
+    background-color: rgba(0, 0, 0, 1);
 
     /* Верхний отступ к элементу <body> 
     */
