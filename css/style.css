@@ -1,5 +1,8 @@
+/* БАЗОВАЯ СТРУКТУРА
+-------------------------------------------------- */
+
 body {
-    /* Base structure */
+    /* Шрифт и цвет фона */
     font-family: 'Arimo', sans-serif;
     background-color: rgba(0, 0, 0, 1);
 
