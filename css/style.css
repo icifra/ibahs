@@ -11,5 +11,5 @@ body {
 
     /* Минимальная высота при закреплении footer 
     */
-    /* min-height: 75rem; */
+    min-height: 75rem;
 }
