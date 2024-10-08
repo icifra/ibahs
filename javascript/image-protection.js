@@ -17,6 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
         img.addEventListener('touchstart', function(event) {
             event.preventDefault();
         });
+
+        // Отключаем действие при завершении касания (touchend)
+        img.addEventListener('touchend', function(event) {
+            event.preventDefault(); // Блокирует завершение долгого нажатия
+        });
     });
 });
 
