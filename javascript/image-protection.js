@@ -12,6 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
         img.addEventListener('dragstart', function(event) {
             event.preventDefault();
         });
+
+        // Отключаем долгое нажатие (для мобильных устройств)
+        img.addEventListener('touchstart', function(event) {
+            event.preventDefault();
+        });
     });
 });
 
