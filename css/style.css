@@ -1,15 +1,6 @@
 /* Globals */
 
 body {
-    /* Шрифт и цвет фона */
+    /* Шрифт фона */
     font-family: 'Arimo', sans-serif;
-    background-color: rgba(15, 15, 15, 1);
-
-    /* Верхний отступ к элементу <body> 
-    */
-    padding-top: 3.5rem;
-
-    /* Минимальная высота при закреплении footer 
-    */
-    /* min-height: 75rem; */
 }
