@@ -22,6 +22,11 @@ document.addEventListener('DOMContentLoaded', function() {
         img.addEventListener('touchend', function(event) {
             event.preventDefault(); // Блокирует завершение долгого нажатия
         });
+
+        // Отключаем перемещение (для мобильных устройств)
+        img.addEventListener('touchmove', function(event) {
+            event.preventDefault();  // Блокируем перемещение пальца
+        });
     });
 });
 
