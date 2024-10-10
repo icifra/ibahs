@@ -36,9 +36,9 @@
             /* Цвет фона */
             background-color: rgba(15, 15, 15, 1);
 
-            /* Верхний отступ к элементу <body> 
+            /* Верхний отступ к элементу <body> при фиксировании навбара
             */
-            padding-top: 3.5rem;
+            /* padding-top: 3.5rem; */
 
             /* Минимальная фиксированная высота при закреплении footer 
             */
@@ -88,7 +88,7 @@
 
 </head>
 
-<body class="d-flex flex-column min-vh-100"> <!-- min-vh-100 - мин высота 100% окна -->
+<body class="">
 
     <!-- Video Background Container -->
     <video class="z-n1 position-fixed top-0 start-0 w-100 h-100 object-fit-cover" autoplay muted loop playsinline preload="auto">
@@ -98,94 +98,104 @@
     <!-- Overlay -->
     <div class="position-fixed top-0 start-0 w-100 h-100 z-n1" style="background-color: rgba(0, 0, 0, 0.5);"></div>
 
-	<header>
+    <div class="d-flex flex-column container-xl min-vh-100"> <!-- Обёртка для всей страницы -->
 
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-md fixed-top" style="background-color: rgba(15, 15, 15, 0.01);">
-            <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" href="#">
-                    <img src="images/logo.svg" alt="Логотип компании" width="34" height="34" class="h-logo protected">
-                    <!-- Классы fs-1 до fs-6 для размера текста-->
-                    <span class="ms-1">Шифры</span>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav ms-auto">
-                        <a class="nav-link" aria-current="page" href="#">Концепция</a>
-                        <a class="nav-link active" href="#">Проекты</a>
-                        <a class="nav-link" href="#">Исследования</a>
-                        <a class="nav-link disabled" aria-disabled="true">Блог</a>
+        <header>
+
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-md" style="background-color: rgba(15, 15, 15, 0.01);">
+                <div class="container-xl"> <!-- Ограничиваем ширину навбара -->
+                    <a class="navbar-brand d-flex align-items-center" href="#">
+                        <img src="images/logo.svg" alt="Логотип компании" width="34" height="34" class="h-logo protected">
+                        <!-- Классы fs-1 до fs-6 для размера текста-->
+                        <span class="ms-1">Шифры</span>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav ms-auto">
+                            <a class="nav-link" aria-current="page" href="#">Концепция</a>
+                            <a class="nav-link active" href="#">Проекты</a>
+                            <a class="nav-link" href="#">Исследования</a>
+                            <a class="nav-link disabled" aria-disabled="true">Блог</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+        </header>
+
+        <!-- Секционный вариант размещения main -->
+        <!-- <main class="flex-fill">
+            <section id="" class="my-3">
+            </section>
+            <section id="" class="my-3">
+            </section>
+        </main> -->
+
+        <main class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+
+            <div class="container-xl"> <!-- Основной контейнер для контента -->
+                <div class="row justify-content-center"> <!-- Центрируем контент -->
+                    <div class="col-lg-6 col-md-8 mx-auto text-center">
+                        <img src="images/wb.png" alt="Хакер" width="142" height="142" class="d-block mx-auto mb-3 protected custom-opacity">
+                        <h1 class="display-5 fw-bold text-body-emphasis">Шифры</h1>
+                        <p class="lead fw-bold">Лаборатория кибербезопасности</p>
+                        <p class="fs-6 mb-4 px-2">Передовые технологии программирования, тестирование инфраструктуры на проникновение, надежная и комплексная защита цифровых данных, операционных систем и компьютерных сетей</p>
+                        <div class="d-flex gap-2 justify-content-center">
+                            <button type="button" class="btn btn-lg btn-primary px-4 gap-3">Защита</button>
+                            <button type="button" class="btn btn-lg btn-danger px-4">Прорыв</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </nav>
 
-	</header>
+        </main>        
 
-    <!-- Секционный вариант размещения main -->
-    <!-- <main class="flex-fill">
-        <section id="" class="my-3">
-        </section>
-        <section id="" class="my-3">
-        </section>
-    </main> -->
-
-    <main class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
-
-        <div class="text-center">
-            <img src="images/wb.png" alt="Хакер" width="142" height="142" class="d-block mx-auto mb-3 protected custom-opacity">
-            <h1 class="display-5 fw-bold text-body-emphasis">Шифры</h1>
-            <div class="col-lg-6 col-md-8 mx-auto">
-                <p class="lead fw-bold">Лаборатория кибербезопасности</p>
-                <p class="fs-6 mb-4 px-2">Передовые технологии программирования, тестирование инфраструктуры на проникновение, надежная и комплексная защита цифровых данных, операционных систем и компьютерных сетей</p>
-                <!-- <span class="d-block">...</span> -->
-                <div class="d-flex gap-2 justify-content-center">
-                    <button type="button" class="btn btn-lg btn-primary px-4 gap-3">Защита</button>
-                    <button type="button" class="btn btn-lg btn-danger px-4">Прорыв</button>
+        <!-- Объявление -->
+        <div class="container-xl">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="alert alert-primary" role="alert" aria-live="polite">
+                        Строка объявления в разработке!
+                    </div>
                 </div>
             </div>
-        </div>
-
-    </main>
-
-    <!-- Объявление -->
-    <div class="alert alert-primary  col-lg-6 mb-3 mx-3" role="alert" aria-live="polite">
-        <span id="announcement-text">Строка объявления в разработке!</span>
-    </div>
-      
-
-    <footer class="mt-auto" style="background-color: rgba(15, 15, 15, 0.01);">
-        <div class="container-fluid">
-            <div class="d-flex flex-row justify-content-between my-3">
-                <div class="d-flex align-items-center" style="margin-top: auto; margin-bottom: auto;"> <!-- Используем margin-top и margin-bottom: auto -->
-                    <img src="images/logo.svg" alt="Логотип компании в футере" width="24" height="24" class="protected">
-                    <span class="ms-1">Шифры</span>
-                    <span class="ms-3 opacity-75">2024</span>
-                    <span class="ms-1 opacity-50">&orarr;2.1</span>
+        </div>        
+        
+        <footer class="mt-auto" style="background-color: rgba(15, 15, 15, 0.01);">
+            <div class="container-xl"> <!-- Ограничиваем ширину футера -->
+                <div class="d-flex flex-row justify-content-between my-3">
+                    <div class="d-flex align-items-center" style="margin-top: auto; margin-bottom: auto;"> <!-- Используем margin-top и margin-bottom: auto -->
+                        <img src="images/logo.svg" alt="Логотип компании в футере" width="24" height="24" class="protected">
+                        <span class="ms-1">Шифры</span>
+                        <span class="ms-3 opacity-75">2024</span>
+                        <span class="ms-1 opacity-50">&orarr;2.1</span>
+                    </div>
+                    <ul class="list-unstyled d-flex align-items-center" style="margin-top: auto; margin-bottom: auto;"> <!-- Используем margin-top и margin-bottom: auto -->
+                        <li class="ms-3">
+                            <a class="link-body-emphasis" href="#">
+                                <img src="icons/whatsapp.svg" alt="ВатсАпп" width="22" height="22">
+                            </a>
+                        </li>
+                        <li class="ms-3">
+                            <a class="link-body-emphasis" href="mailto:dos@ya.ru?subject=Шифры%3A%20ваш%20запрос&body=Здравствуйте!%0A%0AИзложите%20всю%20информацию%20в%20одном%20сообщении.%20Избегайте%20%22приветов%22%20без%20сути%20и%20лишних%20вопросов,%20вроде%20%22вы%20на%20связи?%22%20или%20%22можно%20спросить?%22.%0A%0AДавайте%20сразу%20перейдём%20к%20делу.">
+                                <img src="icons/envelope-fill.svg" alt="Почта" width="22" height="22" class="heartbeat">
+                            </a>
+                        </li>                    
+                        <li class="ms-3">
+                            <a class="link-body-emphasis" href="https://t.me/...?text=Здравствуйте!%0A%0AИзложите%20всю%20информацию%20в%20одном%20сообщении.%20Избегайте%20%22приветов%22%20без%20сути%20и%20лишних%20вопросов,%20вроде%20%22вы%20на%20связи?%22%20или%20%22можно%20спросить?%22.%0A%0AДавайте%20сразу%20перейдём%20к%20делу.">
+                                <img src="icons/telegram.svg" alt="Телеграм" width="22" height="22">
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <ul class="list-unstyled d-flex align-items-center" style="margin-top: auto; margin-bottom: auto;"> <!-- Используем margin-top и margin-bottom: auto -->
-                    <li class="ms-3">
-                        <a class="link-body-emphasis" href="#">
-                            <img src="icons/whatsapp.svg" alt="ВатсАпп" width="22" height="22">
-                        </a>
-                    </li>
-                    <li class="ms-3">
-                        <a class="link-body-emphasis" href="mailto:dos@ya.ru?subject=Шифры%3A%20ваш%20запрос&body=Здравствуйте!%0A%0AИзложите%20всю%20информацию%20в%20одном%20сообщении.%20Избегайте%20%22приветов%22%20без%20сути%20и%20лишних%20вопросов,%20вроде%20%22вы%20на%20связи?%22%20или%20%22можно%20спросить?%22.%0A%0AДавайте%20сразу%20перейдём%20к%20делу.">
-                            <img src="icons/envelope-fill.svg" alt="Почта" width="22" height="22" class="heartbeat">
-                        </a>
-                    </li>                    
-                    <li class="ms-3">
-                        <a class="link-body-emphasis" href="https://t.me/...?text=Здравствуйте!%0A%0AИзложите%20всю%20информацию%20в%20одном%20сообщении.%20Избегайте%20%22приветов%22%20без%20сути%20и%20лишних%20вопросов,%20вроде%20%22вы%20на%20связи?%22%20или%20%22можно%20спросить?%22.%0A%0AДавайте%20сразу%20перейдём%20к%20делу.">
-                            <img src="icons/telegram.svg" alt="Телеграм" width="22" height="22">
-                        </a>
-                    </li>
-                </ul>
             </div>
-        </div>
-    </footer>
+        </footer>
     
+    </div>
+
     <!-- Bootstrap JS and Popper.js -->
 	<script src="javascript/bootstrap.bundle.min.js"></script>
 
@@ -194,7 +204,6 @@
 
     <!-- Image Protection -->
     <script src="javascript/image-protection.js"></script>
-
 
 </body>
 
