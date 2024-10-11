@@ -19,6 +19,7 @@
     backface-visibility: hidden; /* Улучшает производительность и четкость */
     text-rendering: optimizeLegibility; /* Оптимизация для улучшения отображения текста */
     -webkit-font-smoothing: antialiased; /* Сглаживание шрифтов на WebKit-браузерах */
+    will-change: transform; /* Это поможет браузеру заранее подготовиться к анимации */
     /* animation: scroll-text 10s linear infinite; - Скорость управляется в JS */
 }
 
@@ -30,4 +31,5 @@
         transform: translateX(-100%); /* Текст уходит за пределы левого края */
     }
 }
+/* 
 
