@@ -13,9 +13,13 @@
     display: inline-block;
     white-space: nowrap;
     padding-left: 100%; /* Начало текста за пределами контейнера */
-    /* animation: scroll-text 10s linear infinite; Закомментировано, так как скорость управляется в JS */
     margin: 0; /* Убираем внешние отступы */
     line-height: 30px; /* Устанавливаем высоту строки равной высоте контейнера */
+    transform: translateZ(0); /* Включаем аппаратное ускорение */
+    backface-visibility: hidden; /* Улучшает производительность и четкость */
+    text-rendering: optimizeLegibility; /* Оптимизация для улучшения отображения текста */
+    -webkit-font-smoothing: antialiased; /* Сглаживание шрифтов на WebKit-браузерах */
+    /* animation: scroll-text 10s linear infinite; - Скорость управляется в JS */
 }
 
 @keyframes scroll-text {
