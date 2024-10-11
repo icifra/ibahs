@@ -35,21 +35,21 @@
         body {
             /* Цвет фона */
             background-color: rgba(15, 15, 15, 1);
-
-            /* Верхний отступ к элементу <body> при фиксировании навбара
-            */
-            padding-top: 3.5rem;
-
+            
             /* Минимальная фиксированная высота при закреплении footer 
             */
             /* min-height: 75rem; */
+        }
+
+        /* Главнй контейнер */
+        .main-container {
+            padding-top: 3.5rem; /* Верхний отступ к элементу "<body>" при фиксировании навбара */
         }
 
         /* Прозрачность изображения и т.п. */
         .custom-opacity {
             opacity: 0.85;
         }
-
 
         /* Кнопки: синия, красная */
         /* Основные стили для btn-primary */
@@ -98,7 +98,7 @@
     <!-- Overlay -->
     <div class="position-fixed top-0 start-0 w-100 h-100 z-n1" style="background-color: rgba(0, 0, 0, 0.5);"></div>
 
-    <div class="d-flex flex-column container-xl min-vh-100"> <!-- Обёртка для всей страницы -->
+    <div class="d-flex flex-column container-xl main-container min-vh-100"> <!-- Обёртка для всей страницы -->
 
         <header>
 
