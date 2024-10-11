@@ -1,0 +1,29 @@
+/* Контейнер для бегущей строки, скрывает все, что выходит за его пределы */
+.announcement-wrapper {
+    position: relative;
+    width: 100%;
+    height: 30px; /* Высота контейнера для строки */
+    overflow: hidden;
+    display: flex;
+    align-items: center; /* Выравнивание по вертикали */
+    justify-content: flex-start; /* Начало анимации с левого края */
+}
+
+#announcement-text {
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 100%; /* Начало текста за пределами контейнера */
+    /* animation: scroll-text 10s linear infinite; Закомментировано, так как скорость управляется в JS */
+    margin: 0; /* Убираем внешние отступы */
+    line-height: 30px; /* Устанавливаем высоту строки равной высоте контейнера */
+}
+
+@keyframes scroll-text {
+    0% {
+        transform: translateX(100%); /* Текст начинает за пределами правого края */
+    }
+    100% {
+        transform: translateX(-100%); /* Текст уходит за пределы левого края */
+    }
+}
+
