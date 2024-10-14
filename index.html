@@ -130,35 +130,44 @@
 
         </header>
 
-        <!-- Секционный вариант размещения main -->
-        <!-- <main class="flex-fill">
-            <section id="" class="my-3">
-            </section>
-            <section id="" class="my-3">
-            </section>
-        </main> -->
+        <main class="d-flex flex-grow-1">
 
-        <main class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+            <div class="container-xxl d-flex">
+                <div class="row flex-grow-1 justify-content-between">
 
-            <div class="container-xxl px-0"> <!-- Основной контейнер для контента -->
-                <div class="row justify-content-center"> <!-- Центрируем контент -->
-                    <div class="col-lg-6 col-md-8 mx-auto text-center">
-                        <img src="images/wb.png" alt="Хакер" width="142" height="142" class="d-block mx-auto mb-3 protected custom-opacity">
-                        <h1 class="display-5 fw-bold text-body-emphasis">Шифры</h1>
-                        <p class="lead fw-bold">Лаборатория кибербезопасности</p>
-                        <p class="fs-6 mb-4">Передовые технологии программирования, тестирование инфраструктуры на проникновение, надежная и комплексная защита цифровых данных, операционных систем и компьютерных сетей</p>
+                    <!-- Левая колонка -->
+                    <div class="col-sm-4 d-flex flex-column justify-content-between">
+                        <!-- <div>Элемент вверху</div> -->
+                        <!-- <div>Элемент по центру</div> -->
+                        <!-- <div>Элемент внизу</div> -->
+                    </div>
+        
+                    <!-- Центральная колонка -->
+                    <div class="col-sm-4 d-flex flex-column justify-content-center">
+                        <img src="images/wb.png" alt="Хакер" width="142" height="142" class="d-block mx-auto protected custom-opacity mb-2">
+                        <h1 class="display-5 fw-bold text-body-emphasis text-center">Шифры</h1>
+                        <p class="lead fw-bold text-center mb-4">Команда программирования и экспертов по кибербезопасности</p>
+                        <!-- <p class="fs-6 text-center"> Защита цифровых данных, операционных систем и компьютерных сетей</p> -->
                         <div class="d-flex gap-2 justify-content-center">
                             <button type="button" class="btn btn-lg btn-primary px-4 gap-3">Защита</button>
                             <button type="button" class="btn btn-lg btn-danger px-4">Прорыв</button>
                         </div>
                     </div>
+
+                    <!-- Правая колонка -->
+                    <div class="col-sm-4 d-flex flex-column justify-content-between">
+                        <!-- <div>Элемент вверху</div> -->
+                        <!-- <div>Элемент по центру</div> -->
+                        <!-- <div>Элемент внизу</div> -->
+                    </div>
+
                 </div>
             </div>
 
-        </main>        
-
+        </main>
+        
         <!-- Объявление -->
-        <div class="container-xxl px-0">
+        <!-- <div class="container-xxl px-0">
             <div class="row justify-content-center">
                 <div class="col-lg-6">
                     <div class="alert alert-primary d-flex align-items-center" role="alert" aria-live="polite">
@@ -168,7 +177,7 @@
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>       -->
         
         <footer class="mt-auto" style="background-color: rgba(15, 15, 15, 0.01);">
             <div class="container-xxl px-0"> <!-- Ограничиваем ширину футера -->
