@@ -11,24 +11,35 @@
     <!-- Robots -->
     <meta name="robots" content="index, noarchive, noimageindex">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/bootstrap.min.css"> <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/style.css">         <!-- Base CSS -->
+    <link rel="stylesheet" href="css/fonts.css">         <!-- Fonts -->
+    <link rel="stylesheet" href="css/logo.css">          <!-- Logo Animation -->
+    <link rel="stylesheet" href="css/announcement.css">  <!-- Бегущая строка -->
+    <link rel="stylesheet" href="css/icon.css">          <!-- Custom CSS -->
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/logo.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/icon.css">
+    <!-- Scripts -->
+    <!-- Bootstrap JS -->
+	<script defer src="javascript/bootstrap.bundle.min.js"></script>
+
+    <!-- Logo Animation -->
+    <script defer src="javascript/logo.js"></script>
 
     <!-- Бегущая строка -->
-    <link rel="stylesheet" href="css/announcement.css">
     <script defer src="javascript/announcement.js"></script>
-
-    <!-- Fonts -->
-    <link rel="stylesheet" href="css/fonts.css">
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GDCEBH1ZZZ"></script>
-    <script src="javascript/gtag.js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-GDCEBH1ZZZ');
+    </script>
+
+    <!-- Image Protection -->
+    <script defer src="javascript/image-protection.js"></script>
 
     <!-- Page styles -->
     <style>
@@ -275,15 +286,6 @@
         </footer>
     
     </div>
-
-    <!-- Bootstrap JS and Popper.js -->
-	<script src="javascript/bootstrap.bundle.min.js"></script>
-
-    <!-- Logo Animation -->
-    <script src="javascript/logo.js"></script>
-
-    <!-- Image Protection -->
-    <script src="javascript/image-protection.js"></script>
 
 </body>
 
