@@ -1,3 +1,4 @@
+/* Proxy Auto-Configuration File */
 function FindProxyForURL(url, host) {
     // Сайты, которые должны использовать прокси
     if (dnsDomainIs(host, "chatgpt.com") || dnsDomainIs(host, "openai.com")) {
