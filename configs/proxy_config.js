@@ -1,9 +1,20 @@
 /* Proxy Auto-Configuration File */
 function FindProxyForURL(url, host) {
-    // Сайты, которые должны использовать прокси
-    if (dnsDomainIs(host, "chatgpt.com") || dnsDomainIs(host, "openai.com")) {
-        return "PROXY 127.0.0.1:10050";
+    // Список доменов, которые должны использовать прокси:
+    const proxyDomains = [
+        "chatgpt.com",   // Основной сайт ChatGPT
+        "openai.com",    // OpenAI и его поддомены
+        "2ip.ru"         // Сервис для проверки IP
+    ];
+
+    // Проверка: использовать прокси для доменов из списка
+    for (let i = 0; i < proxyDomains.length; i++) {
+        if (dnsDomainIs(host, proxyDomains[i])) {
+            return "PROXY 127.0.0.1:10050";
+        }
     }
-    // Остальной трафик — напрямую
+
+    // === Прямая обработка всего остального трафика ===
     return "DIRECT";
 }
+
