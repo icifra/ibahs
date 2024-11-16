@@ -4,7 +4,7 @@ function FindProxyForURL(url, host) {
     if (
         dnsDomainIs(host, "chatgpt.com") || // chatgpt.com и поддомены
         dnsDomainIs(host, "openai.com") || // openai.com и поддомены
-        dnsDomainIs(host, "microsoft.com")   // сайт и поддомены
+        dnsDomainIs(host, "ipleak.net") // сайт и поддомены
     ) {
         return "PROXY 127.0.0.1:10050"; // Указание адреса прокси
     }
