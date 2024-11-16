@@ -1,15 +1,19 @@
-/* Proxy Auto-Configuration File */
+/* Proxy Auto-Configuration File 
+ * Этот скрипт управляет трафиком через прокси для указанных доменов и их поддоменов.
+ * Вы можете добавлять новые сайты в список (см. комментарии ниже).
+ */
 function FindProxyForURL(url, host) {
+    // === Настройка прокси для конкретных доменов ===
     // Список доменов, которые должны использовать прокси:
     const proxyDomains = [
-        "chatgpt.com",   // Основной сайт ChatGPT
-        "openai.com",    // OpenAI и его поддомены
-        "2ip.ru"         // Сервис для проверки IP
+        ".chatgpt.com",   // Основной сайт ChatGPT
+        ".openai.com",    // OpenAI и его поддомены
+        ".2ip.ru"         // Сервис для проверки IP и его поддомены
     ];
 
     // Проверка: использовать прокси для доменов из списка
     for (let i = 0; i < proxyDomains.length; i++) {
-        if (dnsDomainIs(host, proxyDomains[i])) {
+        if (shExpMatch(host, "*" + proxyDomains[i])) {
             return "PROXY 127.0.0.1:10050";
         }
     }
@@ -18,3 +22,14 @@ function FindProxyForURL(url, host) {
     return "DIRECT";
 }
 
+/* === Инструкции ===
+ * Чтобы добавить новый сайт, выполните следующие шаги:
+ * 1. Найдите основной домен сайта, например "example.com".
+ * 2. Добавьте его в массив proxyDomains в формате ".example.com". Пример:
+ *    const proxyDomains = [
+ *        ".chatgpt.com",
+ *        ".openai.com",
+ *        ".example.com"  // Новый сайт
+ *    ];
+ * 3. Убедитесь, что скрипт сохранён и обновлён на вашем сервере.
+ */
