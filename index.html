@@ -22,6 +22,9 @@
     <!-- Scripts -->
     <!-- Bootstrap JS -->
 	<script defer src="javascript/bootstrap.bundle.min.js"></script>
+    
+    <!-- Функциональность Навбара -->
+    <script defer src="javascript/navbar.js"></script>
 
     <!-- Logo Animation -->
     <script defer src="javascript/logo.js"></script>
@@ -116,7 +119,7 @@
         <header>
 
             <!-- Navbar -->
-            <nav id="navbar" class="navbar navbar-expand-md fixed-top" style="background-color: rgba(15, 15, 15, 0.8);">
+            <nav id="navbar" class="navbar navbar-expand-md fixed-top rounded">
                 <div class="container-xxl"> <!-- Ограничиваем ширину навбара -->
                     <a class="navbar-brand d-flex align-items-center" href="#">
                         <img src="images/logo.svg" alt="Логотип компании" width="34" height="34" class="h-logo protected">
@@ -136,33 +139,6 @@
                     </div>
                 </div>
             </nav>
-
-            <style>
-                #navbar {
-                    transition: top 0.3s ease; /* Плавный переход */
-                }
-            </style>
-
-            <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                    const navbar = document.getElementById("navbar");
-                    let lastScrollTop = 0; // Последнее положение скролла
-
-                    window.addEventListener("scroll", () => {
-                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-                        if (scrollTop > lastScrollTop) {
-                            // Скроллим вниз — скрываем навбар
-                            navbar.style.top = `-${navbar.offsetHeight}px`;
-                        } else {
-                            // Скроллим вверх — показываем навбар
-                            navbar.style.top = "0";
-                        }
-
-                        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Не позволяем отрицательные значения
-                    });
-                });
-            </script>
 
         </header>
 
