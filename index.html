@@ -116,7 +116,7 @@
         <header>
 
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-md fixed-top" style="background-color: rgba(15, 15, 15, 0.01);">
+            <nav id="navbar" class="navbar navbar-expand-md fixed-top" style="background-color: rgba(15, 15, 15, 0.01);">
                 <div class="container-xxl"> <!-- Ограничиваем ширину навбара -->
                     <a class="navbar-brand d-flex align-items-center" href="#">
                         <img src="images/logo.svg" alt="Логотип компании" width="34" height="34" class="h-logo protected">
@@ -136,6 +136,41 @@
                     </div>
                 </div>
             </nav>
+
+            <style>
+                #navbar {
+                    transition: top 0.3s;
+                }
+            </style>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    let navbar = document.getElementById("navbar");
+                    let lastScrollTop = 0;
+
+                    // Получаем высоту навбара динамически
+                    let navbarHeight = navbar.offsetHeight;
+
+                    window.addEventListener("scroll", function () {
+                        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                        if (scrollTop > lastScrollTop) {
+                            // Скролл вниз — скрываем навбар
+                            navbar.style.top = `-${navbarHeight}px`;
+                        } else {
+                            // Скролл вверх — показываем навбар
+                            navbar.style.top = "0";
+                        }
+
+                        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Предотвращение отрицательных значений
+                    });
+
+                    // Обновляем высоту навбара при изменении размера окна
+                    window.addEventListener("resize", function () {
+                        navbarHeight = navbar.offsetHeight;
+                    });
+                });
+            </script>
 
         </header>
 
