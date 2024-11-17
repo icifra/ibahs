@@ -116,7 +116,7 @@
         <header>
 
             <!-- Navbar -->
-            <nav id="navbar" class="navbar navbar-expand-md fixed-top" style="background-color: rgba(15, 15, 15, 0.01);">
+            <nav id="navbar" class="navbar navbar-expand-md fixed-top">
                 <div class="container-xxl"> <!-- Ограничиваем ширину навбара -->
                     <a class="navbar-brand d-flex align-items-center" href="#">
                         <img src="images/logo.svg" alt="Логотип компании" width="34" height="34" class="h-logo protected">
@@ -138,36 +138,72 @@
             </nav>
 
             <style>
+                /* Прозрачный навбар по умолчанию */
                 #navbar {
-                    transition: top 0.3s;
+                    background-color: rgba(15, 15, 15, 0); /* Прозрачный */
+                    transition: background-color 0.3s, top 0.3s;
+                    top: 0;
+                }
+
+                /* Затемнённый навбар */
+                #navbar.scrolled, 
+                #navbar.collapse-open {
+                    background-color: rgba(15, 15, 15, 0.8);
                 }
             </style>
 
             <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    let navbar = document.getElementById("navbar");
+                document.addEventListener("DOMContentLoaded", () => {
+                    const navbar = document.getElementById("navbar");
+                    const navbarToggler = document.querySelector(".navbar-toggler");
+                    const navbarCollapse = document.getElementById("navbarNavAltMarkup");
                     let lastScrollTop = 0;
 
-                    // Получаем высоту навбара динамически
-                    let navbarHeight = navbar.offsetHeight;
+                    const updateNavbarState = () => {
+                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-                    window.addEventListener("scroll", function () {
-                        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                        // Если меню открыто, затемняем навбар
+                        if (navbarCollapse.classList.contains("show")) {
+                            navbar.classList.add("collapse-open");
 
-                        if (scrollTop > lastScrollTop) {
-                            // Скролл вниз — скрываем навбар
-                            navbar.style.top = `-${navbarHeight}px`;
+                            // Затемняем фон навбара в точке 0 при открытии гамбургера
+                            if (scrollTop === 0) {
+                                navbar.classList.add("scrolled");
+                            }
                         } else {
-                            // Скролл вверх — показываем навбар
-                            navbar.style.top = "0";
+                            navbar.classList.remove("collapse-open");
+
+                            // Если пользователь в точке 0 и гамбургер закрыт, фон возвращается к прозрачности
+                            if (scrollTop === 0) {
+                                navbar.classList.remove("scrolled");
+                            }
+                        }
+                    };
+
+                    window.addEventListener("scroll", () => {
+                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                        // Скрываем/показываем навбар
+                        if (scrollTop > lastScrollTop) {
+                            navbar.style.top = `-${navbar.offsetHeight}px`; // Скроллим вниз — скрываем навбар
+                        } else {
+                            navbar.style.top = "0"; // Скроллим вверх — показываем навбар
                         }
 
-                        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Предотвращение отрицательных значений
+                        // Затемняем навбар, если пользователь не в верхней точке страницы
+                        if (scrollTop > 0) {
+                            navbar.classList.add("scrolled");
+                        } else if (!navbarCollapse.classList.contains("show")) {
+                            // Прозрачность только если гамбургер закрыт
+                            navbar.classList.remove("scrolled");
+                        }
+
+                        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Защита от отрицательных значений
                     });
 
-                    // Обновляем высоту навбара при изменении размера окна
-                    window.addEventListener("resize", function () {
-                        navbarHeight = navbar.offsetHeight;
+                    // Обработчик открытия/закрытия гамбургера
+                    navbarToggler.addEventListener("click", () => {
+                        setTimeout(updateNavbarState, 300); // Задержка синхронизирована с анимацией Bootstrap
                     });
                 });
             </script>
