@@ -116,7 +116,7 @@
         <header>
 
             <!-- Navbar -->
-            <nav id="navbar" class="navbar navbar-expand-md fixed-top">
+            <nav id="navbar" class="navbar navbar-expand-md fixed-top" style="background-color: rgba(15, 15, 15, 0.8);">
                 <div class="container-xxl"> <!-- Ограничиваем ширину навбара -->
                     <a class="navbar-brand d-flex align-items-center" href="#">
                         <img src="images/logo.svg" alt="Логотип компании" width="34" height="34" class="h-logo protected">
@@ -138,72 +138,28 @@
             </nav>
 
             <style>
-                /* Прозрачный навбар по умолчанию */
                 #navbar {
-                    background-color: rgba(15, 15, 15, 0); /* Прозрачный */
-                    transition: background-color 0.3s, top 0.3s;
-                    top: 0;
-                }
-
-                /* Затемнённый навбар */
-                #navbar.scrolled, 
-                #navbar.collapse-open {
-                    background-color: rgba(15, 15, 15, 0.8);
+                    transition: top 0.3s ease; /* Плавный переход */
                 }
             </style>
 
             <script>
                 document.addEventListener("DOMContentLoaded", () => {
                     const navbar = document.getElementById("navbar");
-                    const navbarToggler = document.querySelector(".navbar-toggler");
-                    const navbarCollapse = document.getElementById("navbarNavAltMarkup");
-                    let lastScrollTop = 0;
-
-                    const updateNavbarState = () => {
-                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-                        // Если меню открыто, затемняем навбар
-                        if (navbarCollapse.classList.contains("show")) {
-                            navbar.classList.add("collapse-open");
-
-                            // Затемняем фон навбара в точке 0 при открытии гамбургера
-                            if (scrollTop === 0) {
-                                navbar.classList.add("scrolled");
-                            }
-                        } else {
-                            navbar.classList.remove("collapse-open");
-
-                            // Если пользователь в точке 0 и гамбургер закрыт, фон возвращается к прозрачности
-                            if (scrollTop === 0) {
-                                navbar.classList.remove("scrolled");
-                            }
-                        }
-                    };
+                    let lastScrollTop = 0; // Последнее положение скролла
 
                     window.addEventListener("scroll", () => {
                         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-                        // Скрываем/показываем навбар
                         if (scrollTop > lastScrollTop) {
-                            navbar.style.top = `-${navbar.offsetHeight}px`; // Скроллим вниз — скрываем навбар
+                            // Скроллим вниз — скрываем навбар
+                            navbar.style.top = `-${navbar.offsetHeight}px`;
                         } else {
-                            navbar.style.top = "0"; // Скроллим вверх — показываем навбар
+                            // Скроллим вверх — показываем навбар
+                            navbar.style.top = "0";
                         }
 
-                        // Затемняем навбар, если пользователь не в верхней точке страницы
-                        if (scrollTop > 0) {
-                            navbar.classList.add("scrolled");
-                        } else if (!navbarCollapse.classList.contains("show")) {
-                            // Прозрачность только если гамбургер закрыт
-                            navbar.classList.remove("scrolled");
-                        }
-
-                        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Защита от отрицательных значений
-                    });
-
-                    // Обработчик открытия/закрытия гамбургера
-                    navbarToggler.addEventListener("click", () => {
-                        setTimeout(updateNavbarState, 300); // Задержка синхронизирована с анимацией Bootstrap
+                        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Не позволяем отрицательные значения
                     });
                 });
             </script>
