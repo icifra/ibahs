@@ -7,6 +7,7 @@ body {
 
 /* Навбар */
 #navbar {
+    max-width: 1320px; /* Ограничение ширины */
     background-color: rgba(15, 15, 15, 0.85);
     transition: top 0.85s ease; /* Анимация при скролле */
 }
