@@ -2,11 +2,12 @@
 function FindProxyForURL(url, host) {
     // Сайты, которые должны использовать прокси
     if (
-        dnsDomainIs(host, "chatgpt.com") || // chatgpt.com и поддомены
-        dnsDomainIs(host, "openai.com") || // openai.com и поддомены
-        dnsDomainIs(host, "ipleak.net") // сайт и поддомены
+        dnsDomainIs(host, "chatgpt.com") || // сайты и поддомены
+        dnsDomainIs(host, "openai.com") || 
+        dnsDomainIs(host, "microsoft.com") ||
+        dnsDomainIs(host, "corsair.com")
     ) {
-        return "PROXY 127.0.0.1:10050"; // Указание адреса прокси
+        return "PROXY 127.0.0.1:10809"; // Указание адреса прокси
     }
 
     // Все остальные запросы идут напрямую
