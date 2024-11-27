@@ -6,7 +6,6 @@ function FindProxyForURL(url, host) {
         dnsDomainIs(host, "openai.com") || 
         dnsDomainIs(host, "claude.ai") ||
         dnsDomainIs(host, "copilot.microsoft.com") ||
-        dnsDomainIs(host, "msn.com") ||
         dnsDomainIs(host, "corsair.com")
     ) {
         return "PROXY 127.0.0.1:10809"; // Указание адреса прокси
