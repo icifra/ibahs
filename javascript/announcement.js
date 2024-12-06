@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Запускаем первое сообщение
-    setTimeout(updateMessage, 3000); // В первый раз с задержкой в 2 секунды
+    setTimeout(updateMessage, 3000); // В первый раз с задержкой в несколько секунд
 
     // Слушаем завершение анимации для запуска следующего сообщения
     announcementText.addEventListener("transitionend", updateMessage);
