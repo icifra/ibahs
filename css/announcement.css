@@ -1,33 +1,41 @@
 /* Контейнер для бегущей строки */
 .announcement-wrapper {
-    position: relative;
-    width: 100%;
-    height: 30px; /* Высота контейнера для строки */
-    overflow: hidden;
-    display: flex;
-    align-items: center; /* Выравнивание по вертикали */
+  position: relative;
+  width: 100%;
+  height: 30px;
+  /* Высота контейнера для строки */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  /* Выравнивание по вертикали */
 }
 
 /* Основные стили текста бегущей строки */
 #announcement-text {
-    display: inline-block;
-    white-space: nowrap;
-    position: absolute;
-    transform: translateX(100%); /* Начальная позиция - справа за границей контейнера */
+  display: inline-block;
+  white-space: nowrap;
+  position: absolute;
+  transform: translateX(100%);
+  /* Начальная позиция - справа за границей контейнера */
 
-    /* Стили для улучшения рендеринга текста при анимации */
-    will-change: transform; /* Сообщает браузеру об оптимизации ресурсов перед анимацией*/
-    text-rendering: optimizeLegibility; /* Оптимизация для улучшения отображения текста */
-    -webkit-font-smoothing: antialiased; /* Сглаживание шрифтов на WebKit-браузерах */
+  /* Стили для улучшения рендеринга текста при анимации */
+  will-change: transform;
+  /* Сообщает браузеру об оптимизации ресурсов перед анимацией*/
+  text-rendering: optimizeLegibility;
+  /* Оптимизация для улучшения отображения текста */
+  -webkit-font-smoothing: antialiased;
+  /* Сглаживание шрифтов на WebKit-браузерах */
 }
 
 /* Анимация прокрутки текста */
 @keyframes scroll-text {
-    0% {
-        transform: translateX(100%); /* Начинаем справа */
-    }
-    100% {
-        transform: translateX(-100%); /* Уходим за левую границу */
-    }
-}
+  0% {
+    transform: translateX(100%);
+    /* Начинаем справа */
+  }
 
+  100% {
+    transform: translateX(-100%);
+    /* Уходим за левую границу */
+  }
+}

@@ -2,7 +2,7 @@
 <script defer src="javascript/matrix.js"></script>
 
 
-<!-- Animated Background  --> 
+<!-- Animated Background  -->
 <canvas id="matrix" class="position-fixed top-0 start-0 w-100 h-100 z-n1"></canvas>
 
 <!-- Overlay -->
@@ -10,281 +10,281 @@
 
 
 <script>
-    class MatrixEffect {
-        constructor(canvasId, options = {}) {
-            this.canvas = document.getElementById(canvasId);
-            this.ctx = this.canvas.getContext("2d", { alpha: false });
+  class MatrixEffect {
+    constructor(canvasId, options = {}) {
+      this.canvas = document.getElementById(canvasId);
+      this.ctx = this.canvas.getContext("2d", { alpha: false });
 
-            // Настройки с безопасными значениями по умолчанию
-            this.settings = {
-                fontSize: 16,
-                textColor: "#00FF00", // Цвет текста
-                backgroundFade: 0.05,
-                symbols: "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ",
-                fallSpeed: 0.15,
-                symbolChangeSpeed: 50,
-                tailLength: 15,
-                tailFade: 0.85,
-                brightnessVariation: 0.15,
-                randomness: 0.05, // Шанс случайного изменения символов
-                glowEffect: false, 
-                glowStrength: 0.3, // Интенсивность светящегося эффекта
-                fontWeight: 'bold',
-                ...options,
-            };
+      // Настройки с безопасными значениями по умолчанию
+      this.settings = {
+        fontSize: 16,
+        textColor: "#00FF00", // Цвет текста
+        backgroundFade: 0.05,
+        symbols: "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ",
+        fallSpeed: 0.15,
+        symbolChangeSpeed: 50,
+        tailLength: 15,
+        tailFade: 0.85,
+        brightnessVariation: 0.15,
+        randomness: 0.05, // Шанс случайного изменения символов
+        glowEffect: false,
+        glowStrength: 0.3, // Интенсивность светящегося эффекта
+        fontWeight: 'bold',
+        ...options,
+      };
 
-            this.columns = [];
-            this.lastTime = performance.now();
-            this.frameId = null;
-            this.isRunning = false;
+      this.columns = [];
+      this.lastTime = performance.now();
+      this.frameId = null;
+      this.isRunning = false;
 
-            // Инициализация
-            this.initialize();
+      // Инициализация
+      this.initialize();
 
-            // Наблюдатель за изменением размеров с защитой от частых вызовов
-            this.resizeObserver = new ResizeObserver(() => {
-                if (!this.resizeTimeout) {
-                    this.resizeTimeout = setTimeout(() => {
-                        this.handleResize();
-                        this.resizeTimeout = null;
-                    }, 100);
-                }
-            });
-            this.resizeObserver.observe(this.canvas);
+      // Наблюдатель за изменением размеров с защитой от частых вызовов
+      this.resizeObserver = new ResizeObserver(() => {
+        if (!this.resizeTimeout) {
+          this.resizeTimeout = setTimeout(() => {
+            this.handleResize();
+            this.resizeTimeout = null;
+          }, 100);
         }
-
-        initialize() {
-            // Устанавливаем размеры холста
-            this.setCanvasSize();
-            
-            // Настройки рендеринга
-            this.ctx.textRendering = 'geometricPrecision';
-            this.ctx.imageSmoothingEnabled = false;
-            
-            // Создаем колонки
-            const columnCount = Math.ceil(this.canvas.width / this.settings.fontSize) + 1;
-            this.columns = Array(columnCount).fill().map((_, index) => this.createColumn(index));
-        }
-
-        setCanvasSize() {
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-        }
-
-        createColumn(index) {
-            const { fontSize, tailLength, fallSpeed, brightnessVariation } = this.settings;
-            
-            return {
-                x: index * fontSize,
-                y: Math.random() * -this.canvas.height,
-                speed: fallSpeed * fontSize * (0.8 + Math.random() * 0.4),
-                symbols: Array(Math.ceil(tailLength)).fill().map(() => ({
-                    char: this.getRandomSymbol(),
-                    lastChange: performance.now(),
-                    brightness: 1 - Math.random() * brightnessVariation
-                }))
-            };
-        }
-
-        handleResize() {
-            const oldColumns = [...this.columns];
-            const oldWidth = this.canvas.width;
-            
-            // Обновляем размеры
-            this.setCanvasSize();
-            
-            // Восстанавливаем настройки контекста
-            this.ctx.textRendering = 'geometricPrecision';
-            this.ctx.imageSmoothingEnabled = false;
-            
-            const newColumnCount = Math.ceil(this.canvas.width / this.settings.fontSize) + 1;
-            
-            if (newColumnCount > oldColumns.length) {
-                // Добавляем новые колонки
-                const additionalColumns = Array(newColumnCount - oldColumns.length)
-                    .fill()
-                    .map((_, i) => this.createColumn(oldColumns.length + i));
-                this.columns = [...oldColumns, ...additionalColumns];
-            } else {
-                // Удаляем лишние колонки
-                this.columns = oldColumns.slice(0, newColumnCount);
-            }
-            
-            // Корректируем позиции X для всех колонок
-            this.columns.forEach((column, index) => {
-                column.x = index * this.settings.fontSize;
-            });
-        }
-
-        getRandomSymbol() {
-            return this.settings.symbols.charAt(Math.floor(Math.random() * this.settings.symbols.length));
-        }
-
-        updateSymbols(column, currentTime, deltaTime) {
-            const { symbolChangeSpeed, randomness } = this.settings;
-            
-            column.symbols.forEach(symbol => {
-                if (currentTime - symbol.lastChange > symbolChangeSpeed || Math.random() < randomness * deltaTime) {
-                    symbol.char = this.getRandomSymbol();
-                    symbol.lastChange = currentTime;
-                    symbol.brightness = 1 - Math.random() * this.settings.brightnessVariation;
-                }
-            });
-        }
-
-        draw() {
-            const currentTime = performance.now();
-            const deltaTime = (currentTime - this.lastTime) / 1000;
-            this.lastTime = currentTime;
-
-            // Очистка с fade-эффектом
-            this.ctx.fillStyle = `rgba(0, 0, 0, ${this.settings.backgroundFade})`;
-            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-            // Настройка текста
-            const { fontSize, fontWeight, glowEffect, glowStrength, tailFade } = this.settings;
-            this.ctx.font = `${fontWeight} ${fontSize}px monospace`;
-            this.ctx.textAlign = 'center';
-            this.ctx.textBaseline = 'middle';
-
-            // Обновление и отрисовка колонок
-            this.columns.forEach(column => {
-                // Обновляем позицию
-                column.y += column.speed * deltaTime;
-
-                // Обновляем символы
-                this.updateSymbols(column, currentTime, deltaTime);
-
-                // Отрисовываем символы
-                column.symbols.forEach((symbol, i) => {
-                    const symbolY = column.y - (i * fontSize);
-                    
-                    // Пропускаем невидимые символы
-                    if (symbolY < -fontSize || symbolY > this.canvas.height) return;
-
-                    // Настройка прозрачности и свечения
-                    const fadeAlpha = Math.pow(tailFade, i);
-                    
-                    if (glowEffect && i === 0) {
-                        this.ctx.shadowColor = `rgba(0, 255, 0, ${glowStrength})`;
-                        this.ctx.shadowBlur = Math.floor(fontSize / 4);
-                    } else {
-                        this.ctx.shadowBlur = 0;
-                    }
-
-                    // Отрисовка символа
-                    const [r, g, b] = this.hexToRgb(this.settings.textColor);
-                    this.ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${fadeAlpha * symbol.brightness})`;                
-                    this.ctx.fillText(symbol.char, column.x + fontSize / 2, symbolY);
-                });
-
-                // Сброс колонки при достижении низа
-                if (column.y > this.canvas.height + fontSize * column.symbols.length) {
-                    column.y = -fontSize * column.symbols.length;
-                    column.speed = this.settings.fallSpeed * fontSize * (0.8 + Math.random() * 0.4);
-                }
-            });
-        }
-
-        // Метод для преобразования цвета из HEX в RGB
-        hexToRgb(hex) {
-            const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-            hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
-            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? [
-                parseInt(result[1], 16),
-                parseInt(result[2], 16),
-                parseInt(result[3], 16)
-            ] : [0, 255, 0]; // Зеленый по умолчанию
-        }
-        
-        // Методы управления
-        setFallSpeed(speed) {
-            this.settings.fallSpeed = speed;
-            this.columns.forEach(column => {
-                column.speed = speed * this.settings.fontSize * (0.8 + Math.random() * 0.4);
-            });
-        }
-
-        setSymbolChangeSpeed(speed) {
-            this.settings.symbolChangeSpeed = speed;
-        }
-
-        setTailLength(length) {
-            this.settings.tailLength = length;
-            this.columns.forEach(column => {
-                const currentLength = column.symbols.length;
-                if (length > currentLength) {
-                    const additionalSymbols = Array(length - currentLength).fill().map(() => ({
-                        char: this.getRandomSymbol(),
-                        lastChange: performance.now(),
-                        brightness: 1 - Math.random() * this.settings.brightnessVariation
-                    }));
-                    column.symbols.push(...additionalSymbols);
-                } else {
-                    column.symbols.length = length;
-                }
-            });
-        }
-
-        setTailFade(fade) {
-            this.settings.tailFade = fade;
-        }
-
-        setGlowStrength(strength) {
-            this.settings.glowStrength = strength;
-        }
-
-        toggleGlowEffect() {
-            this.settings.glowEffect = !this.settings.glowEffect;
-        }
-
-        start() {
-            if (!this.isRunning) {
-                this.isRunning = true;
-                this.lastTime = performance.now();
-                
-                const animate = () => {
-                    if (!this.isRunning) return;
-                    this.draw();
-                    this.frameId = requestAnimationFrame(animate);
-                };
-                
-                animate();
-            }
-        }
-
-        stop() {
-            this.isRunning = false;
-            if (this.frameId) {
-                cancelAnimationFrame(this.frameId);
-                this.frameId = null;
-            }
-        }
-
-        destroy() {
-            this.stop();
-            this.resizeObserver.disconnect();
-            if (this.resizeTimeout) {
-                clearTimeout(this.resizeTimeout);
-                this.resizeTimeout = null;
-            }
-        }
+      });
+      this.resizeObserver.observe(this.canvas);
     }
 
-    const matrix = new MatrixEffect("matrix", {
-        fontSize: 16, // Размер символов
-        textColor: "#00ffc8", // Цвет текста
-        fallSpeed: 3.2, // Скорость падения символов
-        symbolChangeSpeed: 250, // Интервал смены символов в миллисекундах
-        symbols: "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789",
-        tailLength: 8, // Длина хвоста символов
-        tailFade: 0.64, // Прозрачность затухания хвоста
-        glowEffect: false, // Включение/выключение светящегося эффекта
-        fontWeight: '500', // Толщина шрифта
-        brightnessVariation: 0.42, // Вариативность яркости символов
-        backgroundFade: 0.93 // Скорость затухания предыдущего кадра (след)
-    });
+    initialize() {
+      // Устанавливаем размеры холста
+      this.setCanvasSize();
 
-    matrix.start();
+      // Настройки рендеринга
+      this.ctx.textRendering = 'geometricPrecision';
+      this.ctx.imageSmoothingEnabled = false;
+
+      // Создаем колонки
+      const columnCount = Math.ceil(this.canvas.width / this.settings.fontSize) + 1;
+      this.columns = Array(columnCount).fill().map((_, index) => this.createColumn(index));
+    }
+
+    setCanvasSize() {
+      this.canvas.width = window.innerWidth;
+      this.canvas.height = window.innerHeight;
+    }
+
+    createColumn(index) {
+      const { fontSize, tailLength, fallSpeed, brightnessVariation } = this.settings;
+
+      return {
+        x: index * fontSize,
+        y: Math.random() * -this.canvas.height,
+        speed: fallSpeed * fontSize * (0.8 + Math.random() * 0.4),
+        symbols: Array(Math.ceil(tailLength)).fill().map(() => ({
+          char: this.getRandomSymbol(),
+          lastChange: performance.now(),
+          brightness: 1 - Math.random() * brightnessVariation
+        }))
+      };
+    }
+
+    handleResize() {
+      const oldColumns = [...this.columns];
+      const oldWidth = this.canvas.width;
+
+      // Обновляем размеры
+      this.setCanvasSize();
+
+      // Восстанавливаем настройки контекста
+      this.ctx.textRendering = 'geometricPrecision';
+      this.ctx.imageSmoothingEnabled = false;
+
+      const newColumnCount = Math.ceil(this.canvas.width / this.settings.fontSize) + 1;
+
+      if (newColumnCount > oldColumns.length) {
+        // Добавляем новые колонки
+        const additionalColumns = Array(newColumnCount - oldColumns.length)
+          .fill()
+          .map((_, i) => this.createColumn(oldColumns.length + i));
+        this.columns = [...oldColumns, ...additionalColumns];
+      } else {
+        // Удаляем лишние колонки
+        this.columns = oldColumns.slice(0, newColumnCount);
+      }
+
+      // Корректируем позиции X для всех колонок
+      this.columns.forEach((column, index) => {
+        column.x = index * this.settings.fontSize;
+      });
+    }
+
+    getRandomSymbol() {
+      return this.settings.symbols.charAt(Math.floor(Math.random() * this.settings.symbols.length));
+    }
+
+    updateSymbols(column, currentTime, deltaTime) {
+      const { symbolChangeSpeed, randomness } = this.settings;
+
+      column.symbols.forEach(symbol => {
+        if (currentTime - symbol.lastChange > symbolChangeSpeed || Math.random() < randomness * deltaTime) {
+          symbol.char = this.getRandomSymbol();
+          symbol.lastChange = currentTime;
+          symbol.brightness = 1 - Math.random() * this.settings.brightnessVariation;
+        }
+      });
+    }
+
+    draw() {
+      const currentTime = performance.now();
+      const deltaTime = (currentTime - this.lastTime) / 1000;
+      this.lastTime = currentTime;
+
+      // Очистка с fade-эффектом
+      this.ctx.fillStyle = `rgba(0, 0, 0, ${this.settings.backgroundFade})`;
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+      // Настройка текста
+      const { fontSize, fontWeight, glowEffect, glowStrength, tailFade } = this.settings;
+      this.ctx.font = `${fontWeight} ${fontSize}px monospace`;
+      this.ctx.textAlign = 'center';
+      this.ctx.textBaseline = 'middle';
+
+      // Обновление и отрисовка колонок
+      this.columns.forEach(column => {
+        // Обновляем позицию
+        column.y += column.speed * deltaTime;
+
+        // Обновляем символы
+        this.updateSymbols(column, currentTime, deltaTime);
+
+        // Отрисовываем символы
+        column.symbols.forEach((symbol, i) => {
+          const symbolY = column.y - (i * fontSize);
+
+          // Пропускаем невидимые символы
+          if (symbolY < -fontSize || symbolY > this.canvas.height) return;
+
+          // Настройка прозрачности и свечения
+          const fadeAlpha = Math.pow(tailFade, i);
+
+          if (glowEffect && i === 0) {
+            this.ctx.shadowColor = `rgba(0, 255, 0, ${glowStrength})`;
+            this.ctx.shadowBlur = Math.floor(fontSize / 4);
+          } else {
+            this.ctx.shadowBlur = 0;
+          }
+
+          // Отрисовка символа
+          const [r, g, b] = this.hexToRgb(this.settings.textColor);
+          this.ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${fadeAlpha * symbol.brightness})`;
+          this.ctx.fillText(symbol.char, column.x + fontSize / 2, symbolY);
+        });
+
+        // Сброс колонки при достижении низа
+        if (column.y > this.canvas.height + fontSize * column.symbols.length) {
+          column.y = -fontSize * column.symbols.length;
+          column.speed = this.settings.fallSpeed * fontSize * (0.8 + Math.random() * 0.4);
+        }
+      });
+    }
+
+    // Метод для преобразования цвета из HEX в RGB
+    hexToRgb(hex) {
+      const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+      hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+      ] : [0, 255, 0]; // Зеленый по умолчанию
+    }
+
+    // Методы управления
+    setFallSpeed(speed) {
+      this.settings.fallSpeed = speed;
+      this.columns.forEach(column => {
+        column.speed = speed * this.settings.fontSize * (0.8 + Math.random() * 0.4);
+      });
+    }
+
+    setSymbolChangeSpeed(speed) {
+      this.settings.symbolChangeSpeed = speed;
+    }
+
+    setTailLength(length) {
+      this.settings.tailLength = length;
+      this.columns.forEach(column => {
+        const currentLength = column.symbols.length;
+        if (length > currentLength) {
+          const additionalSymbols = Array(length - currentLength).fill().map(() => ({
+            char: this.getRandomSymbol(),
+            lastChange: performance.now(),
+            brightness: 1 - Math.random() * this.settings.brightnessVariation
+          }));
+          column.symbols.push(...additionalSymbols);
+        } else {
+          column.symbols.length = length;
+        }
+      });
+    }
+
+    setTailFade(fade) {
+      this.settings.tailFade = fade;
+    }
+
+    setGlowStrength(strength) {
+      this.settings.glowStrength = strength;
+    }
+
+    toggleGlowEffect() {
+      this.settings.glowEffect = !this.settings.glowEffect;
+    }
+
+    start() {
+      if (!this.isRunning) {
+        this.isRunning = true;
+        this.lastTime = performance.now();
+
+        const animate = () => {
+          if (!this.isRunning) return;
+          this.draw();
+          this.frameId = requestAnimationFrame(animate);
+        };
+
+        animate();
+      }
+    }
+
+    stop() {
+      this.isRunning = false;
+      if (this.frameId) {
+        cancelAnimationFrame(this.frameId);
+        this.frameId = null;
+      }
+    }
+
+    destroy() {
+      this.stop();
+      this.resizeObserver.disconnect();
+      if (this.resizeTimeout) {
+        clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = null;
+      }
+    }
+  }
+
+  const matrix = new MatrixEffect("matrix", {
+    fontSize: 16, // Размер символов
+    textColor: "#00ffc8", // Цвет текста
+    fallSpeed: 3.2, // Скорость падения символов
+    symbolChangeSpeed: 250, // Интервал смены символов в миллисекундах
+    symbols: "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789",
+    tailLength: 8, // Длина хвоста символов
+    tailFade: 0.64, // Прозрачность затухания хвоста
+    glowEffect: false, // Включение/выключение светящегося эффекта
+    fontWeight: '500', // Толщина шрифта
+    brightnessVariation: 0.42, // Вариативность яркости символов
+    backgroundFade: 0.93 // Скорость затухания предыдущего кадра (след)
+  });
+
+  matrix.start();
 </script>

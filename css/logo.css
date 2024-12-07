@@ -1,20 +1,34 @@
 /* Определение анимации вращения */
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(1080deg); } /* 3 оборота */
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(1080deg);
+  }
+
+  /* 3 оборота */
 }
 
 @keyframes spin-infinite {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); } /* Один оборот */
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+
+  /* Один оборот */
 }
 
 /* Применение анимации к элементам с классом rotate */
 .rotate {
-    animation: spin 8s linear;
+  animation: spin 8s linear;
 }
 
 /* Вращение в футере бесконечно */
 .rotate-infinite {
-    animation: spin-infinite 2.67s linear infinite;
+  animation: spin-infinite 2.67s linear infinite;
 }
