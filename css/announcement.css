@@ -2,12 +2,11 @@
 .announcement-wrapper {
   position: relative;
   width: 100%;
-  height: 30px;
   /* Высота контейнера для строки */
+  height: 30px;
   overflow: hidden;
   display: flex;
   align-items: center;
-  /* Выравнивание по вертикали */
 }
 
 /* Основные стили текста бегущей строки */
@@ -15,27 +14,27 @@
   display: inline-block;
   white-space: nowrap;
   position: absolute;
-  transform: translateX(100%);
   /* Начальная позиция - справа за границей контейнера */
+  transform: translateX(100%);
 
-  /* Стили для улучшения рендеринга текста при анимации */
-  will-change: transform;
+  /* === Стили для улучшения рендеринга === */
   /* Сообщает браузеру об оптимизации ресурсов перед анимацией*/
-  text-rendering: optimizeLegibility;
+  will-change: transform;
   /* Оптимизация для улучшения отображения текста */
-  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   /* Сглаживание шрифтов на WebKit-браузерах */
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Анимация прокрутки текста */
 @keyframes scroll-text {
   0% {
-    transform: translateX(100%);
     /* Начинаем справа */
+    transform: translateX(100%);
   }
 
   100% {
-    transform: translateX(-100%);
     /* Уходим за левую границу */
+    transform: translateX(-100%);
   }
 }

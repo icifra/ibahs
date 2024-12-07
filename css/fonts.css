@@ -1,8 +1,8 @@
 @font-face {
   font-family: 'Arimo';
   src: url('../fonts/Arimo-VariableFont_wght.ttf') format('truetype');
-  font-weight: 100 900;
   /* Указываем диапазон весов */
+  font-weight: 100 900;
   font-style: normal;
 }
 

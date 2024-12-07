@@ -1,12 +1,12 @@
 @keyframes heartbeat {
   0% {
-    transform: scale(1);
     /* Начинаем с исходного размера */
+    transform: scale(1);
   }
 
   25% {
-    transform: scale(1.4);
     /* Увеличиваем размер на 30% */
+    transform: scale(1.4);
   }
 
   50% {
