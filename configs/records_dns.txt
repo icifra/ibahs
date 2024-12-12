@@ -1,0 +1,14 @@
+;; DNS Records for 
+xn--h1aqlos.xn--p1ai
+
+
+;; A Records
+@   IN A 185.199.110.153   ; Github Server 1
+@   IN A 185.199.108.153   ; Github Server 2
+@   IN A 185.199.111.153   ; Github Server 3
+@   IN A 185.199.109.153   ; Github Server 4
+
+;; TXT Records
+@   IN TXT "yandex-verification: e795ea53c65d544c"   ; Yandex verification key
+@   IN TXT "google-site-verification=yu5KXuo3Y2MWsL76mn4XuuJSNwSmhQxV2Ags1bnjF0M" ; Google verification key
+
