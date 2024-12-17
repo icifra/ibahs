@@ -25,6 +25,8 @@
   <script defer src="javascript/navbar.js"></script> <!-- Функциональность Навбара -->
   <script defer src="javascript/logo.js"></script> <!-- Logo Animation -->
   <script defer src="javascript/announcement.js"></script> <!-- Бегущая строка -->
+  <script defer src="javascript/hls.js"></script> <!-- HLS JS -->
+  <script defer type="module" src="javascript/media-chrome.js"></script> <!-- Media Chrome -->
 
   <!-- Yandex.Metrika -->
   <script type="text/javascript">
@@ -237,19 +239,33 @@
           <div class="col-12 col-md-6 col-lg-4 d-flex flex-column justify-content-between order-md-3 order-lg-3 my-3">
 
             <!-- Видео -->
-            <video 
-              class="img-fluid w-100 border rounded" 
-              controls 
-              preload="metadata" 
-              playsinline
-              poster="images/watch.jpg" 
-              controlsList="nodownload" 
-              oncontextmenu="return false;">
-              <source 
-                src="videos/флаг.mp4" 
-                type="video/mp4">
-              Ваш браузер не поддерживает просмотр видео
-            </video>
+
+            <!-- Видео блоки с Media Chrome -->
+            <div class="img-fluid w-100 border rounded overflow-hidden">
+              <media-controller class="d-block">
+                <video slot="media" playsinline data-hls="videos/флаг.m3u8"></video>
+                <media-poster-image slot="poster" src="images/watch.jpg"></media-poster-image>
+              </media-controller>
+            </div>
+            
+            <!-- Инициализация HLS -->
+            <script>
+              document.addEventListener("DOMContentLoaded", function () {
+                var videos = document.querySelectorAll('video[data-hls]');
+
+                videos.forEach(function (video) {
+                  var videoSrc = video.getAttribute('data-hls');
+
+                  if (Hls.isSupported()) {
+                    var hls = new Hls();
+                    hls.loadSource(videoSrc);
+                    hls.attachMedia(video);
+                  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = videoSrc;
+                  }
+                });
+              });
+            </script>
             <!-- <div>Элемент по центру</div> -->
             <!-- <div>Элемент внизу</div> -->
           </div>
