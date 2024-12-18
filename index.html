@@ -238,23 +238,38 @@
           <!-- Правая колонка -->
           <div class="col-12 col-md-6 col-lg-4 d-flex flex-column justify-content-between order-md-3 order-lg-3 my-3">
 
-            <!-- Видео -->
-
             <!-- Видео блоки с Media Chrome -->
-            <div class="img-fluid w-100 border rounded overflow-hidden">
-              <media-controller class="d-block">
-                <video slot="media" playsinline data-hls="videos/флаг.m3u8"></video>
-                <media-poster-image slot="poster" src="images/watch.jpg"></media-poster-image>
+              <media-controller class="w-100 border rounded overflow-hidden">
+                <video 
+                  slot="media" 
+                  src="videos/флаг.m3u8"
+                  playsinline 
+                ></video>
+
+                <media-loading-indicator slot="centered-chrome"></media-loading-indicator>
+
+                <media-poster-image
+                  slot="poster"
+                  src="images/watch.jpg"
+                ></media-poster-image>
+
+                <media-control-bar>
+                  <media-play-button></media-play-button>
+                  <media-time-range></media-time-range>
+                  <media-time-display></media-time-display>
+                  <media-pip-button></media-pip-button>
+                  <media-fullscreen-button></media-fullscreen-button>
+                </media-control-bar>
+
               </media-controller>
-            </div>
             
             <!-- Инициализация HLS -->
             <script>
               document.addEventListener("DOMContentLoaded", function () {
-                var videos = document.querySelectorAll('video[data-hls]');
+                var videos = document.querySelectorAll('video[src]');
 
                 videos.forEach(function (video) {
-                  var videoSrc = video.getAttribute('data-hls');
+                  var videoSrc = video.getAttribute('src');
 
                   if (Hls.isSupported()) {
                     var hls = new Hls();
