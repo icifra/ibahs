@@ -2,7 +2,9 @@ class HLSInitializer {
   constructor() {
     this.options = {
       autoStartLoad: false,
-      maxBufferLength: 30
+      maxBufferLength: 30,
+      maxMaxBufferLength: 60,
+      enableWorker: true
     };
   }
 
@@ -25,9 +27,9 @@ class HLSInitializer {
     hls.loadSource(videoSrc);
     hls.attachMedia(video);
 
-    // Важно! Слушаем событие play до attachMedia
+    //Слушаем событие play до attachMedia
     video.addEventListener('play', () => {
-      hls.startLoad();
+      hls.startLoad(-1);
     }, { once: true });
   }
 }
