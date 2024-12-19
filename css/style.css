@@ -4,7 +4,11 @@
 
 body {
   font-family: 'Arimo', sans-serif;
-  /* background-color: rgba(15, 15, 15, 1); */
+  background: radial-gradient(ellipse, 
+  rgba(6, 30, 66, 0.8) 15%, 
+  rgba(3, 18, 40, 0.9) 40%, 
+  rgba(0, 0, 0, 1) 100%);
+background-attachment: fixed; /* Фиксированный фон */
 }
 
 /* ================================
