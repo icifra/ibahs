@@ -9,6 +9,7 @@ body {
   rgba(3, 18, 40, 0.9) 40%, 
   rgba(0, 0, 0, 1) 100%);
 background-attachment: fixed; /* Фиксированный фон */
+background-size: cover;
 }
 
 /* ================================
