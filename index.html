@@ -32,7 +32,8 @@
   <script defer src="javascript/hls.js"></script> <!-- HLS JS -->
   <script defer type="module" src="javascript/media-chrome.js"></script> <!-- Media Chrome -->
   <script defer type="module" src="javascript/hlsInitializer.js"></script> <!-- Модуль инициализации HLS -->
-  <script defer type="module" src="javascript/main.js"></script> <!-- Файл с вызовом инициализации HLS -->
+  <script defer type="module" src="javascript/geoData.js"></script> <!-- Модуль GeoIP2 -->
+  <script defer type="module" src="javascript/main.js"></script> <!-- Файл с вызовом инициализаций -->
 
   <!-- Yandex.Metrika -->
   <script type="text/javascript">
@@ -292,7 +293,14 @@
 
               </media-controller>
             </div>
-            <!-- <div>Элемент по центру</div> -->
+            <div class="my-3">
+              <h4>Информация о посетителе</h3>
+              <p class="">IP адрес: ${geoData.ip}</p>
+              <p class="">
+                Город: ${geoData.city}<br>
+                Страна: ${geoData.country}
+              </p>
+            </div>
             <!-- <div>Элемент внизу</div> -->
           </div>
 
