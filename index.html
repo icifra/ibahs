@@ -294,16 +294,31 @@
               </media-controller>
             </div>
 
-            <!-- Блок Гео -->
-            <div class="my-3">
-              <h4>Информация о посетителе</h4>
-              <p>IP адрес: <span id="geo-ip"></span></p>
-              <p>
-                Город: <span id="geo-city"></span><br>
-                Страна: <span id="geo-country"></span>
-              </p>
-            </div>
+            <!-- Гео блок-->
+            <div class="container-fluid bg-info-subtle border border-info-subtle rounded text-info-emphasis p-3 mt-3">
+              <h4 class="text-center">Информация о посетителе</h4>
             
+              <div class="row text-center">
+                <!-- IP -->
+                <div class="col-4">
+                  <p class="mb-2">IP адрес:</p>
+                  <p class="mb-0" id="geo-ip"></p>
+                </div>
+            
+                <!-- Город -->
+                <div class="col-4">
+                  <p class="mb-2">Город:</p>
+                  <p class="mb-0" id="geo-city"></p>
+                </div>
+            
+                <!-- Страна -->
+                <div class="col-4">
+                  <p class="mb-2">Страна:</p>
+                  <p class="mb-0" id="geo-country"></p>
+                </div>
+              </div>
+            </div>
+ 
             <!-- <div>Элемент внизу</div> -->
           </div>
 
