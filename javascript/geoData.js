@@ -13,6 +13,13 @@ export default class GeoDataInitializer {
   decodeHeader(header) {
     try {
       if (!header) return 'Неизвестно';
+
+      // Добавляем отладочный вывод
+      console.log('=== Debug ===');
+      console.log('1. Исходный заголовок:', header);
+      console.log('2. После escape():', escape(header));
+      console.log('3. Финальный результат:', decodeURIComponent(escape(header)));
+
       // Декодируем заголовок из UTF-8
       return decodeURIComponent(escape(header));
     } catch {
