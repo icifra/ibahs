@@ -12,7 +12,7 @@ export default class GeoDataInitializer {
   // Функция для декодирования заголовков
   decodeHeader(header) {
     try {
-      if (!header) return 'Неизвестно';
+      if (!header) return 'Не привязан';
 
       // Преобразуем строку в массив байтов
       const bytes = new Uint8Array(header.split('').map(char => char.charCodeAt(0)));
@@ -20,7 +20,7 @@ export default class GeoDataInitializer {
       // Декодируем заголовок из UTF-8
       return new TextDecoder('utf-8').decode(bytes);
     } catch {
-      return 'Неизвестно';
+      return 'Ошибка Д';
     }
   }
 
@@ -39,7 +39,7 @@ export default class GeoDataInitializer {
 
       // Создаем объект с данными
       this.data = {
-        ip: ip || 'Неизвестно',
+        ip: ip || 'Отсутствует',
         city: city,
         country: country
       };
