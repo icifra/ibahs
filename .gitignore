@@ -1,56 +1,58 @@
-# compiled output
-backend/dist/
-backend/node_modules/
-backend/build/
+# Глобальные правила игнорирования для всего проекта (без якоря к корню)
 
-# Logs
-backend/logs/
-backend/*.log
-backend/npm-debug.log*
-backend/pnpm-debug.log*
-backend/yarn-debug.log*
-backend/yarn-error.log*
-backend/lerna-debug.log*
+# Скомпилированный вывод (build artifacts)
+dist/
+node_modules/
+build/
 
-# OS
-backend/.DS_Store
+# Логи
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
 
-# Tests
-backend/coverage/
-backend/.nyc_output/
+# Файлы операционной системы
+.DS_Store
 
-# IDEs and editors
-backend/.idea/
-backend/.project
-backend/.classpath
-backend/.c9/
-backend/*.launch
-backend/.settings/
-backend/*.sublime-workspace
+# Отчеты о тестировании
+coverage/
+.nyc_output/
 
-# IDE - VSCode
-backend/.vscode/*
-!backend/.vscode/settings.json
-!backend/.vscode/tasks.json
-!backend/.vscode/launch.json
-!backend/.vscode/extensions.json
+# Файлы IDE и редакторов
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 
-# dotenv environment variable files
-backend/.env
-backend/.env.development.local
-backend/.env.test.local
-backend/.env.production.local
-backend/.env.local
+# Файлы VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
-# temp directory
-backend/.temp/
-backend/.tmp/
+# Файлы переменных окружения dotenv
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
 
-# Runtime data
-backend/pids/
-backend/*.pid
-backend/*.seed
-backend/*.pid.lock
+# Временные директории
+.temp/
+.tmp/
 
-# Diagnostic reports (https://nodejs.org/api/report.html)
-backend/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+# Данные времени выполнения
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Отчеты диагностики Node.js
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
