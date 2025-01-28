@@ -5,7 +5,8 @@ function FindProxyForURL(url, host) {
     dnsDomainIs(host, "chatgpt.com") || // сайты и поддомены
     dnsDomainIs(host, "openai.com") ||
     dnsDomainIs(host, "claude.ai") ||
-    dnsDomainIs(host, "copilot.microsoft.com")
+    dnsDomainIs(host, "microsoft.com") ||
+    nsDomainIs(host, "google.com")
   ) {
     return "SOCKS 127.0.0.1:10808"; // Указание адреса прокси
   }
