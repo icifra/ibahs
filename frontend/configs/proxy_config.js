@@ -6,7 +6,9 @@ function FindProxyForURL(url, host) {
     dnsDomainIs(host, "openai.com") ||
     dnsDomainIs(host, "claude.ai") ||
     dnsDomainIs(host, "microsoft.com") ||
-    nsDomainIs(host, "google.com")
+    nsDomainIs(host, "google.com") ||
+    nsDomainIs(host, "googleapis.com") ||
+    nsDomainIs(host, "deepseek.com")
   ) {
     return "SOCKS 127.0.0.1:10808"; // Указание адреса прокси
   }
