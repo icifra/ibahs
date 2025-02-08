@@ -3,9 +3,9 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 
 // Модули NestJS для Fastify
-import { 
-  FastifyAdapter, 
-  NestFastifyApplication 
+import {
+  FastifyAdapter,
+  NestFastifyApplication
 } from '@nestjs/platform-fastify';
 
 // Главный модуль приложения
@@ -14,12 +14,13 @@ import { AppModule } from './app.module';
 // Плагины Fastify
 import fastifyCors from '@fastify/cors';
 import fastifyHelmet from '@fastify/helmet';
-
+import fastifyCookie from '@fastify/cookie';
+import fastifySession from '@fastify/session';
 
 // Функция запуска приложения
 async function bootstrap() {
 
-  // Создаем экземпляр FastifyAdapter с базовыми настройками 
+  // Создаем экземпляр FastifyAdapter с базовыми настройками
   const fastifyAdapter = new FastifyAdapter({
     logger: true,  // Включаем логгирование
     ignoreTrailingSlash: true,  // Игнорируем слеши в конце URL
@@ -32,11 +33,31 @@ async function bootstrap() {
     fastifyAdapter
   );
 
-  // Базовая защита (регистрация)
-  await app.register(fastifyCors);  // Упрощенная конфигурация CORS
-  await app.register(fastifyHelmet); // Базовый Helmet достаточен
+  // *** Регистрация плагинов Fastify ***
 
-  // Настройка глобального префикса
+  // Базовая защита
+  await app.register(fastifyCors);  // Обработка запросов CORS
+  await app.register(fastifyHelmet); // Добавление заголовков безопасности HTTP
+
+  // Куки
+  await app.register(fastifyCookie);
+
+  // Поддержка сессий
+  const sessionSecret = process.env.SESSION_SECRET;
+  if (!sessionSecret) {
+    throw new Error('SESSION_SECRET environment variable is required');
+  }
+
+  await app.register(fastifySession, {
+    secret: sessionSecret,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production', // Динамическое включение https в production
+      httpOnly: true, // Защита от XSS
+      sameSite: 'lax', // Защита от CSRF
+    },
+  });
+
+  // Настройка глобального префикса для API эндпоинтов
   app.setGlobalPrefix('api');
 
   // Настройка глобальной валидации данных
@@ -49,15 +70,16 @@ async function bootstrap() {
     }
   }));
 
-  // Определяем порт из переменной окружения
+  // Определяем порт из переменной окружения PORT или порт по умолчанию 3001
   const port = process.env.PORT || 3001;
-  
-  // Для Docker или внешнего доступа: 
+
+  // Для Docker или внешнего доступа:
   // const host = '0.0.0.0'; // Слушать на всех сетевых интерфейсах
   // await app.listen(port, host);
-  
-  // Запуск сервера
-  await app.listen(port);  // await app.listen(port, host);
+
+  // Запуск сервера на указанном порту
+  await app.listen(port);
+  console.log(`Application is running on: ${await app.getUrl()}/api`); // Выводим URL приложения в консоль после запуска
 }
 
 bootstrap();

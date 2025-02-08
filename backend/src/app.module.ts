@@ -13,10 +13,11 @@ import { AIModule } from './ai/ai.module';
           'PORT',
           'NODE_ENV',
           'GEMINI_API_KEY',
+          'SESSION_SECRET',
         ];
         for (const env of requiredEnvs) {
           if (!config[env]) {
-             throw new Error(`Environment variable ${env} is required`);
+            throw new Error(`Environment variable ${env} is required`);
           }
         }
         return config;
