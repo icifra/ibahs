@@ -54,6 +54,7 @@ async function bootstrap() {
       secure: process.env.NODE_ENV === 'production', // Динамическое включение https в production
       httpOnly: true, // Защита от XSS
       sameSite: 'lax', // Защита от CSRF
+      maxAge: 1800000, // 30 минут
     },
   });
 

@@ -1,22 +1,18 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-
-// Google AI SDK
 import { GoogleGenerativeAI, GenerateContentResponse, ChatSession } from '@google/generative-ai';
-
 import { GeminiTextChatRequestDto } from './gemini-text-chat-request.dto';
 
 @Injectable()
 export class GeminiTextChatService {
-  // Приватные свойства
   private readonly genAI: GoogleGenerativeAI;
-  private chatHistory: Map<string, ChatSession> = new Map();
+  private readonly chatHistory = new Map<string, ChatSession>();
+  private readonly lastAccessed = new Map<string, number>();
+  private readonly SESSION_TIMEOUT = 1800000; // 30 минут в миллисекундах
 
-  // Конструктор сервиса
   constructor(private configService: ConfigService) {
     const apiKey = this.configService.get<string>('GEMINI_API_KEY');
 
-    // Проверка ключа
     if (!apiKey) {
       console.error('GEMINI_API_KEY is not defined in .env file');
       throw new InternalServerErrorException(
@@ -24,43 +20,48 @@ export class GeminiTextChatService {
       );
     }
 
-    this.genAI = new GoogleGenerativeAI(apiKey); // Инициализация SDK
+    this.genAI = new GoogleGenerativeAI(apiKey);
     console.log('GeminiTextChatService initialized.');
   }
-  // Метод chat
+
   async chat(requestDto: GeminiTextChatRequestDto, sessionId: string): Promise<GenerateContentResponse> {
-
     try {
-      let chat: ChatSession; // <-- хранит объект сессии чата
+      // Очистка устаревших сессий
+      const now = Date.now();
+      for (const [sid, time] of this.lastAccessed.entries()) {
+        if (now - time > this.SESSION_TIMEOUT) {
+          this.chatHistory.delete(sid);
+          this.lastAccessed.delete(sid);
+        }
+      }
 
-      // Проверка наличия сессии
+      let chat: ChatSession;
+
       if (this.chatHistory.has(sessionId)) {
         chat = this.chatHistory.get(sessionId)!;
+        this.lastAccessed.set(sessionId, now);
         console.log(`Using existing chat session for sessionId: ${sessionId}`);
-        // Или новая сессия
       } else {
-        // Новый экземпляр
         const model = this.genAI.getGenerativeModel({
           model: requestDto.model,
           systemInstruction: requestDto.systemInstruction,
         });
-        // Инициализация сессии
+
         chat = model.startChat({
           generationConfig: requestDto.generationConfig,
           safetySettings: requestDto.safetySettings,
         });
-        // Сохранение сессии
+
         this.chatHistory.set(sessionId, chat);
+        this.lastAccessed.set(sessionId, now);
         console.log(`Creating new chat session for sessionId: ${sessionId}`);
       }
 
-      // Отправка сообщения пользователя
       const result = await chat.sendMessage(requestDto.message);
-      // Получение и возврат ответа
       const response = result.response;
       return response as GenerateContentResponse;
 
-    } catch (error) { // Обработка ошибок
+    } catch (error) {
       console.error('Error in GeminiTextChatService chat:', error);
       throw new InternalServerErrorException(
         'Failed to process chat using Google Gemini API',
