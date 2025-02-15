@@ -24,7 +24,8 @@ async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter({
     logger: true,  // Включаем логгирование
     ignoreTrailingSlash: true,  // Игнорируем слеши в конце URL
-    caseSensitive: false  // URL не чувствительны к регистру
+    caseSensitive: false,  // URL не чувствительны к регистру
+    trustProxy: true // Проксирование куки
   });
 
   // Создание приложения NestJS на Fastify
