@@ -264,34 +264,33 @@
           <div class="col-12 col-md-6 col-lg-4 d-flex flex-column justify-content-between order-md-3 order-lg-3 my-3">
 
             <!-- Видеоблок -->
-            <div class="border rounded overflow-hidden">
-              <media-controller class="w-100 align-top">
-                <video 
-                  playsinline
-                  crossorigin 
-                  slot="media" 
-                  src="https://f842b5f7b522-shifry.s3.ru1.storage.beget.cloud/films/ready-player-one/playlist.m3u8"
-                ></video>
+            <media-controller>
+              
+              <video 
+                playsinline
+                crossorigin 
+                slot="media" 
+                src="https://f842b5f7b522-shifry.s3.ru1.storage.beget.cloud/films/ready-player-one/playlist.m3u8"
+              ></video>
 
-                <media-loading-indicator 
-                  slot="centered-chrome" 
-                  noautohide=""
-                ></media-loading-indicator>
+              <media-loading-indicator 
+                slot="centered-chrome" 
+                noautohide=""
+              ></media-loading-indicator>
 
-                <media-poster-image
-                  slot="poster"
-                  src="https://f842b5f7b522-shifry.s3.ru1.storage.beget.cloud/films/ready-player-one/poster.webp"
-                ></media-poster-image>
+              <media-poster-image
+                slot="poster"
+                src="https://f842b5f7b522-shifry.s3.ru1.storage.beget.cloud/films/ready-player-one/poster.webp"
+              ></media-poster-image>
 
-                <media-control-bar>
-                  <media-play-button notooltip></media-play-button>
-                  <media-time-range></media-time-range>
-                  <media-time-display></media-time-display>
-                  <media-fullscreen-button notooltip></media-fullscreen-button>
-                </media-control-bar>
+              <media-control-bar>
+                <media-play-button notooltip></media-play-button>
+                <media-time-range></media-time-range>
+                <media-time-display></media-time-display>
+                <media-fullscreen-button notooltip></media-fullscreen-button>
+              </media-control-bar>
 
-              </media-controller>
-            </div>
+            </media-controller>
 
             <!-- Гео блок-->
             <div class="container-fluid bg-info-subtle border border-info-subtle rounded text-info-emphasis p-3 mt-3">
