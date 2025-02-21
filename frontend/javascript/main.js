@@ -12,6 +12,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   await geoInit.initialize();
 
   // Инициализируем чат-бот
-  const chatBot = new ChatBotInitializer();
-  chatBot.initialize();
+  new ChatBotInitializer();
 });

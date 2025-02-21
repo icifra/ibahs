@@ -1,9 +1,11 @@
 export default class ChatBotInitializer {
   constructor() {
+    // UI элементы
     this.messagesContainer = document.getElementById('chat-messages');
     this.messageInput = document.getElementById('message-input');
     this.sendButton = document.getElementById('send-button');
 
+    // Конфигурация чата
     this.chatConfig = {
       model: 'gemini-2.0-flash',
       systemInstruction: 'Вы дружелюбный ассистент. Отвечайте кратко и по существу.',
@@ -13,28 +15,15 @@ export default class ChatBotInitializer {
       }
     };
 
-    this.isSessionInitialized = false;
+    // Инициализация обработчиков событий
+    this.setupEventListeners();
   }
 
-  initialize() {
+  setupEventListeners() {
     this.sendButton.addEventListener('click', () => this.handleSendMessage());
     this.messageInput.addEventListener('keydown', e => {
       if (e.key === 'Enter') this.handleSendMessage();
     });
-
-    this.initializeChat();
-  }
-
-  async initializeChat() {
-    try {
-      const response = await this.sendMessage('', true);
-      if (response) {
-        this.addBotMessage(response);
-        this.isSessionInitialized = true;
-      }
-    } catch (error) {
-      console.error('Ошибка инициализации чата:', error);
-    }
   }
 
   async handleSendMessage() {
@@ -52,37 +41,29 @@ export default class ChatBotInitializer {
     }
   }
 
-  async sendMessage(message, isInitial = false) {
+  async sendMessage(message) {
     const payload = {
       model: this.chatConfig.model,
       message,
+      systemInstruction: this.chatConfig.systemInstruction,
       generationConfig: this.chatConfig.generationConfig
     };
 
-    if (isInitial) {
-      payload.systemInstruction = this.chatConfig.systemInstruction;
-    }
+    const response = await fetch('/api/ai/gemini/text-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
 
-    try {
-      const response = await fetch('/api/ai/gemini/text-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-      const data = await response.json();
-      return data.candidates[0].content.parts[0].text;
-    } catch (error) {
-      throw error;
-    }
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const data = await response.json();
+    return data.candidates[0].content.parts[0].text;
   }
 
   addUserMessage(text) {
     const messageHtml = `
       <div class="d-flex justify-content-end mb-2">
-        <div class="bg-primary text-white p-2 rounded" style="max-width: 80%;">
+        <div class="bg-primary-subtle text-primary-emphasis p-2 rounded" style="max-width: 80%;">
           ${text}
         </div>
       </div>`;
@@ -92,7 +73,7 @@ export default class ChatBotInitializer {
   addBotMessage(text) {
     const messageHtml = `
       <div class="d-flex justify-content-start mb-2">
-        <div class="bg-success p-2 rounded" style="max-width: 80%;">
+        <div class="bg-success-subtle text-success-emphasis p-2 rounded" style="max-width: 80%;">
           ${text}
         </div>
       </div>`;
