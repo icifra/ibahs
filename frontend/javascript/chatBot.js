@@ -1,10 +1,9 @@
-// chatBot.js
 export default class ChatBotInitializer {
   constructor() {
     this.initializeElements();
     this.initializeConfig();
-    this.isProcessing = false; // Флаг активного запроса
-    this.isFirstMessage = true; // Флаг первого сообщения
+    this.isProcessing = false;
+    this.isFirstMessage = true;
     this.setupEventListeners();
   }
 
@@ -15,9 +14,8 @@ export default class ChatBotInitializer {
       sendButton: document.getElementById('send-button')
     };
 
-    // Валидация критических элементов UI
     Object.entries(elements).forEach(([key, element]) => {
-      if (!element) throw new Error(`Required DOM element not found: ${key}`);
+      if (!element) throw new Error(`Critical UI element not found: ${key}`);
     });
 
     Object.assign(this, elements);
@@ -28,45 +26,38 @@ export default class ChatBotInitializer {
       model: 'gemini-2.0-flash',
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 200
+        maxOutputTokens: 350
       }
-      /* Опциональные настройки безопасности
-      safetySettings: [
-        {
-          category: 'HARM_CATEGORY_HARASSMENT',
-          threshold: 'BLOCK_MEDIUM_AND_ABOVE'
-        },
-        {
-          category: 'HARM_CATEGORY_HATE_SPEECH',
-          threshold: 'BLOCK_MEDIUM_AND_ABOVE'
-        }
-      ]
-      */
     };
 
     this.systemInstruction = 'Вы дружелюбный ассистент. Отвечайте кратко и по существу.';
   }
 
   setupEventListeners() {
-    this.sendButton.addEventListener('click', () => this.handleSendMessage());
+    let debounceTimer;
+    const handleSendAction = () => {
+      if (this.isProcessing) return;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => this.handleSendMessage(), 300);
+    };
+
+    this.sendButton.addEventListener('click', handleSendAction);
     this.messageInput.addEventListener('keydown', event => {
       if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
-        this.handleSendMessage();
+        handleSendAction();
       }
     });
   }
 
   async handleSendMessage() {
-    if (this.isProcessing) return;
-    
     const message = this.messageInput.value.trim();
     if (!message) return;
 
     try {
       this.isProcessing = true;
       this.updateUIState(true);
-      
+
       this.addUserMessage(message);
       this.messageInput.value = '';
 
@@ -82,7 +73,7 @@ export default class ChatBotInitializer {
         this.isFirstMessage = false;
       }
     } catch (error) {
-      console.error('Chat error:', error);
+      this.logError(error);
       this.handleError(error);
     } finally {
       this.isProcessing = false;
@@ -92,28 +83,29 @@ export default class ChatBotInitializer {
 
   async sendMessageWithTimeout(payload) {
     const controller = new AbortController();
-    
-    try {
-      const response = await Promise.race([
-        fetch('/api/ai/gemini/text-chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-          signal: controller.signal
-        }),
-        new Promise((_, reject) => 
-          setTimeout(() => {
-            controller.abort();
-            reject(new Error('Request timeout'));
-          }, 60000) // 60 секунд максимальное время ожидания ответа
-        )
-      ]);
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      
+    try {
+      const response = await fetch('/api/ai/gemini/text-chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+        credentials: 'same-origin'
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
+      }
+
       const data = await response.json();
-      return data.candidates[0]?.content?.parts[0]?.text;
+      return data.candidates?.[0]?.content?.parts?.[0]?.text;
     } catch (error) {
+      clearTimeout(timeoutId);
       if (error.name === 'AbortError') {
         throw new Error('Превышено время ожидания ответа');
       }
@@ -121,47 +113,46 @@ export default class ChatBotInitializer {
     }
   }
 
+  logError(error) {
+    console.error('Chat error:', error);
+  }
+
   updateUIState(isLoading) {
     this.sendButton.disabled = isLoading;
     this.messageInput.disabled = isLoading;
+    this.sendButton.setAttribute('aria-busy', isLoading);
+    this.messageInput.placeholder = isLoading ? 'Отправка...' : 'Напишите сообщение...';
   }
 
   handleError(error) {
-    const errorMessage = error.message === 'Request timeout' 
-      ? 'Извините, сервер не отвечает. Попробуйте повторить запрос.'
+    const errorMessage = error.message === 'Превышено время ожидания ответа'
+      ? 'Превышено время ожидания ответа. Попробуйте еще раз.'
       : 'Произошла ошибка при обработке запроса. Попробуйте позже.';
-    
+
     this.addBotMessage(`⚠️ ${errorMessage}`);
   }
 
   addUserMessage(text) {
-    const messageHtml = `
-      <div class="d-flex justify-content-end mb-2">
-        <div class="bg-primary-subtle text-primary-emphasis p-2 rounded" style="max-width: 80%;">
-          ${this.escapeHtml(text)}
-        </div>
-      </div>`;
-    this.appendMessage(messageHtml);
-  }
-
-  addBotMessage(text) {
-    const messageHtml = `
-      <div class="d-flex justify-content-start mb-2">
-        <div class="bg-success-subtle text-success-emphasis p-2 rounded" style="max-width: 80%;">
-          ${this.escapeHtml(text)}
-        </div>
-      </div>`;
-    this.appendMessage(messageHtml);
-  }
-
-  appendMessage(messageHtml) {
-    this.messagesContainer.insertAdjacentHTML('beforeend', messageHtml);
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'd-flex justify-content-end mb-2';
+    const innerDiv = document.createElement('div');
+    innerDiv.className = 'bg-primary-subtle text-primary-emphasis p-2 rounded';
+    innerDiv.style.maxWidth = '80%';
+    innerDiv.textContent = text;
+    messageDiv.appendChild(innerDiv);
+    this.messagesContainer.appendChild(messageDiv);
     this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
   }
 
-  escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+  addBotMessage(text) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'd-flex justify-content-start mb-2';
+    const innerDiv = document.createElement('div');
+    innerDiv.className = 'bg-success-subtle text-success-emphasis p-2 rounded';
+    innerDiv.style.maxWidth = '80%';
+    innerDiv.textContent = text;
+    messageDiv.appendChild(innerDiv);
+    this.messagesContainer.appendChild(messageDiv);
+    this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
   }
 }
