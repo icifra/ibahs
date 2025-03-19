@@ -13,7 +13,7 @@ body {
 /* Навбар */
 #navbar {
   /* Ограничение ширины */
-  background-color: rgba(20, 3, 48, 0.85);
+  background-color: rgba(20, 3, 48, 0.9);
   /* Анимация при скролле */
   transition: top 0.64s ease;
 }
@@ -26,7 +26,7 @@ body {
 
 /* Футер */
 #footer {
-  background-color: rgba(20, 3, 48, 0.85);
+  background-color: rgba(20, 3, 48, 0.9);
 }
 
 /* ================================

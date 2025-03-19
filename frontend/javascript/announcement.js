@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
   const announcementText = document.getElementById("announcement-text");
   const messages = [
-    "Мы работаем над нашим веб-сайтом, следовательно задержки",
-    "Консультации по кибербезопасности поддерживаются 24/7",
-    "Свяжитесь с нами для получения дополнительной информации"
+    "Вас видно в сети! Вы уязвимы. И это проблема",
+    "Шифры – команда программирования и экспертов по кибербезопасности",
+    "Готовы к диалогу? Пишите: dos@ya.ru"
   ];
 
   let messageIndex = 0;
