@@ -34,7 +34,7 @@
   
   <script defer type="module" src="javascript/main.js"></script> <!-- Файл с вызовом инициализаций -->
 
-  <!-- Yandex.Metrika -->
+  <!-- Metrika.Yandex -->
   <script type="text/javascript">
     (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
     m[i].l=1*new Date();
@@ -49,6 +49,16 @@
     });
   </script>
   <noscript><div><img src="https://mc.yandex.ru/watch/99166328" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+
+  <!-- Analytics.Google -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GDCEBH1ZZZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-GDCEBH1ZZZ');
+  </script>
 
   <script defer src="javascript/image-protection.js"></script> <!-- Image Protection -->
 
