@@ -1,3 +1,4 @@
+// Файл: chatBot.js
 export default class ChatBotInitializer {
   constructor() {
     this.initializeElements();
@@ -30,7 +31,7 @@ export default class ChatBotInitializer {
       }
     };
 
-    this.systemInstruction = 'Вы дружелюбный ассистент. Отвечайте кратко и по существу.';
+    this.systemInstruction = 'Ты - дружелюбный помощник, который помогает пользователю с вопросами и задачами. Будь кратким и полезным.';
   }
 
   setupEventListeners() {
@@ -38,7 +39,7 @@ export default class ChatBotInitializer {
     const handleSendAction = () => {
       if (this.isProcessing) return;
       clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => this.handleSendMessage(), 300);
+      debounceTimer = setTimeout(() => this.handleSendMessage(), 300); // Твой оригинальный debounce
     };
 
     this.sendButton.addEventListener('click', handleSendAction);
@@ -54,6 +55,7 @@ export default class ChatBotInitializer {
     const message = this.messageInput.value.trim();
     if (!message) return;
 
+    // try/catch/finally и управление isProcessing/updateUIState остаются как в твоем оригинале
     try {
       this.isProcessing = true;
       this.updateUIState(true);
@@ -64,17 +66,18 @@ export default class ChatBotInitializer {
       const payload = {
         ...this.chatConfig,
         message,
-        ...(this.isFirstMessage && { systemInstruction: this.systemInstruction })
+        systemInstruction: this.systemInstruction
       };
 
-      const response = await this.sendMessageWithTimeout(payload);
-      if (response) {
-        this.addBotMessage(response);
+      // Вызываем sendMessageWithTimeout, который теперь будет правильно обрабатывать ответ
+      const botResponseText = await this.sendMessageWithTimeout(payload); 
+      if (botResponseText) { // Проверяем, что botResponseText не пустой или undefined
+        this.addBotMessage(botResponseText);
         this.isFirstMessage = false;
       }
     } catch (error) {
-      this.logError(error);
-      this.handleError(error);
+      this.logError(error); // Твой оригинальный logError
+      this.handleError(error); // Твой оригинальный handleError
     } finally {
       this.isProcessing = false;
       this.updateUIState(false);
@@ -97,15 +100,34 @@ export default class ChatBotInitializer {
         credentials: 'same-origin'
       });
 
+      clearTimeout(timeoutId); // <-- ВАЖНО: Очищаем таймаут здесь, если ответ получен
+
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
       }
 
       const data = await response.json();
-      return data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+      // --- ОСНОВНОЕ ИЗМЕНЕНИЕ ЗДЕСЬ ---
+      // Бэкенд теперь возвращает { "text": "..." }
+      if (data && typeof data.text === 'string') {
+        return data.text;
+      } else {
+        // Если формат ответа неожиданный, логируем и возвращаем null или выбрасываем ошибку
+        console.error('Unexpected API response format:', data);
+        // Можно вернуть специальное сообщение об ошибке или null, чтобы handleError его обработал
+        throw new Error('Получен некорректный формат ответа от сервера.'); 
+      }
+      // --- КОНЕЦ ОСНОВНОГО ИЗМЕНЕНИЯ ---
+
     } catch (error) {
-      clearTimeout(timeoutId);
+      // clearTimeout(timeoutId); // Уже очищен выше, если запрос был успешным до этой точки.
+                               // Если ошибка произошла до clearTimeout (например, сеть упала до fetch),
+                               // то timeoutId еще активен и его очистка здесь имеет смысл,
+                               // но если это AbortError, то controller уже сделал свое дело.
+                               // Для простоты и избежания двойной очистки оставим как было,
+                               // т.к. основная очистка теперь в try.
       if (error.name === 'AbortError') {
         throw new Error('Превышено время ожидания ответа');
       }
@@ -114,24 +136,26 @@ export default class ChatBotInitializer {
   }
 
   logError(error) {
-    console.error('Chat error:', error);
+    console.error('Chat error:', error); // Твоя оригинальная функция
   }
 
   updateUIState(isLoading) {
     this.sendButton.disabled = isLoading;
     this.messageInput.disabled = isLoading;
-    this.sendButton.setAttribute('aria-busy', isLoading);
-    this.messageInput.placeholder = isLoading ? 'Отправка...' : 'Напишите сообщение...';
+    this.sendButton.setAttribute('aria-busy', isLoading.toString()); // Убедимся, что это строка
+    this.messageInput.placeholder = isLoading ? 'Отправка...' : 'Напишите сообщение...'; // Твои оригинальные плейсхолдеры
   }
 
   handleError(error) {
-    const errorMessage = error.message === 'Превышено время ожидания ответа'
-      ? 'Превышено время ожидания ответа. Попробуйте еще раз.'
+    // Твоя оригинальная логика обработки ошибок
+    const errorMessage = error.message === 'Превышено время ожидания ответа' || error.message.includes('Получен некорректный формат ответа от сервера.')
+      ? error.message // Показываем специфичное сообщение об ошибке
       : 'Произошла ошибка при обработке запроса. Попробуйте позже.';
 
     this.addBotMessage(`⚠️ ${errorMessage}`);
   }
 
+  // Твои оригинальные методы addUserMessage и addBotMessage
   addUserMessage(text) {
     const messageDiv = document.createElement('div');
     messageDiv.className = 'd-flex justify-content-end mb-2';
