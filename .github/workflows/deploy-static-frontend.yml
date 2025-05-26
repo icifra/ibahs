@@ -1,0 +1,59 @@
+name: 🎨 Deploy Static Frontend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/deploy-static-frontend.yml'
+
+jobs:
+  deploy-static-files:
+    name: 🚀 Deploy Static Frontend Files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔎 Validate Frontend Structure (Optional)
+        run: |
+          if [ ! -f "frontend/index.html" ]; then
+            echo "❌ ERROR: frontend/index.html not found!" >&2
+            exit 1
+          fi
+          echo "✅ Frontend structure OK (index.html found)."
+
+      - name: 🔄 Deploy Static Files via Rsync
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avzr --delete --checksum 
+          path: frontend/ # Source: content of 'frontend' dir
+          remote_path: ${{ secrets.VPS_STATIC_FRONTEND_PATH }}/ # Target on VPS
+          remote_host: ${{ secrets.VPS_HOST }}
+          remote_user: ${{ secrets.VPS_USER }}
+          remote_key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: 🧐 Verify Deployment (Optional)
+        if: always()
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            echo ">>> Verifying static frontend deployment on VPS"
+            echo "Files in ${{ secrets.VPS_STATIC_FRONTEND_PATH }}:"
+            ls -la ${{ secrets.VPS_STATIC_FRONTEND_PATH }}
+            if [ -f "${{ secrets.VPS_STATIC_FRONTEND_PATH }}/index.html" ]; then
+              echo "✅ index.html found. Frontend deployment likely successful."
+            else
+              echo "❌ ERROR: index.html NOT FOUND in target after rsync!" >&2
+            fi
+
+      - name: 📜 Frontend Deployment Summary
+        if: always()
+        run: |
+          echo "## 🎨 Frontend Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployed to:** ${{ secrets.VPS_HOST }}:${{ secrets.VPS_STATIC_FRONTEND_PATH }}" >> $GITHUB_STEP_SUMMARY
