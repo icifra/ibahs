@@ -8,20 +8,9 @@ import { AIModule } from './ai/ai.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      validate: (config: Record<string, unknown>) => {
-        const requiredEnvs = [
-          'PORT',
-          'NODE_ENV',
-          'GEMINI_API_KEY',
-          'SESSION_SECRET',
-        ];
-        for (const env of requiredEnvs) {
-          if (!config[env]) {
-            throw new Error(`Environment variable ${env} is required`);
-          }
-        }
-        return config;
-      },
+      // Ни envFilePath, ни validate здесь не нужны.
+      // NestJS по умолчанию ищет .env в корне проекта.
+      // Валидация runtime-переменных происходит в main.ts и конструкторах сервисов.
     }),
     AIModule,
   ],

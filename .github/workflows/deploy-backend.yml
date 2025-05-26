@@ -1,0 +1,154 @@
+name: 🚀 Deploy Backend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/deploy-backend.yml'
+
+jobs:
+  build-and-deploy-backend:
+    name: 📦 Build & Deploy Backend
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: ./backend } }
+
+    steps:
+      - name: ⬇️ Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'backend/.nvmrc' 
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: 📦 Install ALL Dependencies
+        run: npm ci
+
+      - name: ⚙️ Build NestJS Application
+        run: npm run build
+
+      - name: 🏷️ Generate Release Information
+        id: release_info
+        run: |
+          echo "version=$(date +%Y%m%d%H%M%S)" >> $GITHUB_OUTPUT
+          echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        working-directory: . # Этот шаг выполняется в корне репозитория
+
+      - name: 🎁 Prepare Deployment Package (Prune & Archive)
+        # Удаляем devDependencies, затем архивируем dist, node_modules (только prod), package.json, package-lock.json
+        run: |
+          npm prune --production
+          tar -czvf ../backend-deploy-${{ steps.release_info.outputs.version }}.tar.gz dist node_modules package.json package-lock.json
+        # working-directory: ./backend (уже установлено в defaults)
+
+      - name: 🚚 Upload Package to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "backend-deploy-${{ steps.release_info.outputs.version }}.tar.gz" # Архив лежит в корне после предыдущего шага
+          target: "/tmp/"
+          # working-directory: . # Явно указываем, чтобы source path был корректен (если defaults не сработал на scp-action)
+
+      - name: 🚀 Execute Deployment Script on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -e # Exit immediately if a command exits with a non-zero status.
+
+            # Variables for paths and names
+            RELEASE_VERSION="${{ steps.release_info.outputs.version }}"
+            BASE_PATH="${{ secrets.VPS_BACKEND_BASE_PATH }}" # /var/www/shifry/backend
+            RELEASES_DIR="${BASE_PATH}/releases"
+            SHARED_DIR="${BASE_PATH}/shared"
+            CURRENT_SYMLINK_PATH="${BASE_PATH}/current"
+            NEW_RELEASE_DIR="${RELEASES_DIR}/${RELEASE_VERSION}"
+            ARCHIVE_NAME="backend-deploy-${RELEASE_VERSION}.tar.gz"
+            ARCHIVE_PATH_TMP="/tmp/${ARCHIVE_NAME}"
+            SHARED_ENV_FILE="${SHARED_DIR}/.env"
+            RELEASE_ENV_SYMLINK="${NEW_RELEASE_DIR}/.env"
+
+            echo ">>> Deploying Backend Version: ${RELEASE_VERSION}"
+
+            # 1. Create new release directory
+            echo "INFO: Creating new release directory: ${NEW_RELEASE_DIR}"
+            mkdir -p "${NEW_RELEASE_DIR}"
+
+            # 2. Extract archive and remove it from /tmp
+            echo "INFO: Extracting ${ARCHIVE_PATH_TMP} to ${NEW_RELEASE_DIR}"
+            tar -xzvf "${ARCHIVE_PATH_TMP}" -C "${NEW_RELEASE_DIR}"
+            echo "INFO: Removing archive ${ARCHIVE_PATH_TMP}"
+            rm "${ARCHIVE_PATH_TMP}"
+
+            # 3. Symlink shared .env file into the new release directory
+            echo "INFO: Attempting to symlink .env file."
+            if [ -f "${SHARED_ENV_FILE}" ]; then
+              ln -sfn "${SHARED_ENV_FILE}" "${RELEASE_ENV_SYMLINK}"
+              echo "SUCCESS: Symlinked ${SHARED_ENV_FILE} to ${RELEASE_ENV_SYMLINK}"
+            else
+              echo "WARNING: Production .env file (${SHARED_ENV_FILE}) not found. Application might not start correctly."
+              # Consider exiting with error if .env is absolutely critical:
+              # echo "ERROR: Production .env file is missing. Deployment aborted." >&2; exit 1;
+            fi
+            
+            # (Optional) Symlink other shared resources like 'uploads' if needed
+            # if [ -d "${SHARED_DIR}/uploads" ]; then
+            #   ln -sfn "${SHARED_DIR}/uploads" "${NEW_RELEASE_DIR}/uploads"; echo "INFO: Symlinked shared/uploads."
+            # fi
+
+            # 4. Atomically update the 'current' symbolic link to point to the new release
+            echo "INFO: Updating 'current' symlink to point to ${NEW_RELEASE_DIR}"
+            ln -sfn "${NEW_RELEASE_DIR}" "${CURRENT_SYMLINK_PATH}"
+
+            # 5. Restart the backend service (using your existing service name)
+            echo "INFO: Restarting backend.service"
+            sudo systemctl restart backend.service
+
+            # 6. Basic health check & rollback on failure
+            echo "INFO: Verifying service status (waiting 5s)..."
+            sleep 5 
+            if systemctl is-active --quiet backend.service; then
+              echo "SUCCESS: backend.service is active."
+            else
+              echo "ERROR: backend.service failed to start after deploying ${RELEASE_VERSION}!" >&2
+              echo "INFO: Attempting to rollback to the previous version..."
+              # Find the release deployed just before the current one (second newest)
+              PREVIOUS_RELEASE_DIR=$(ls -1dt ${RELEASES_DIR}/*/ | sed -n '2p')
+              if [ -n "${PREVIOUS_RELEASE_DIR}" ] && [ -d "${PREVIOUS_RELEASE_DIR}" ]; then
+                echo "INFO: Rolling back 'current' symlink to ${PREVIOUS_RELEASE_DIR}"
+                ln -sfn "${PREVIOUS_RELEASE_DIR}" "${CURRENT_SYMLINK_PATH}"
+                echo "INFO: Restarting backend.service with rolled-back version."
+                sudo systemctl restart backend.service
+                sleep 3
+                if systemctl is-active --quiet backend.service; then
+                  echo "SUCCESS: Rollback to ${PREVIOUS_RELEASE_DIR} successful. Service is active."
+                else
+                  echo "ERROR: Rollback to ${PREVIOUS_RELEASE_DIR} also failed. Manual intervention required." >&2
+                fi
+              else
+                echo "WARNING: No previous release found to rollback to. Manual intervention required." >&2
+              fi
+              exit 1 # Exit with error to fail the GitHub Actions job
+            fi
+
+            # 7. Clean up old releases (keep the last 5)
+            echo "INFO: Cleaning up old releases (keeping last 5)."
+            (cd "${RELEASES_DIR}" && ls -1dt */ | tail -n +6 | xargs -r rm -rf) || echo "INFO: No old releases to clean or cleanup failed (non-critical)."
+
+            echo "✅✅✅ Backend deployment of version ${RELEASE_VERSION} completed successfully! ✅✅✅"
+
+      - name: 📜 Deployment Summary
+        if: always()
+        run: |
+          echo "## 🚀 Backend Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** ${{ steps.release_info.outputs.version }} (${{ steps.release_info.outputs.short_sha }})" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployed to:** ${{ secrets.VPS_HOST }}:${{ secrets.VPS_BACKEND_BASE_PATH }}/current" >> $GITHUB_STEP_SUMMARY
+        working-directory: . # Этот шаг выполняется в корне репозитория
