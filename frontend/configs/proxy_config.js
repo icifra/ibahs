@@ -2,13 +2,20 @@
 function FindProxyForURL(url, host) {
   // Сайты, которые должны использовать прокси
   if (
-    dnsDomainIs(host, "chatgpt.com") || // сайты и поддомены
+    // OpenAI
+    dnsDomainIs(host, "chatgpt.com") || 
     dnsDomainIs(host, "openai.com") ||
+    
+    // Claude/Anthropic
     dnsDomainIs(host, "claude.ai") ||
-    dnsDomainIs(host, "microsoft.com") ||
-    nsDomainIs(host, "google.com") ||
-    nsDomainIs(host, "googleapis.com") ||
-    nsDomainIs(host, "deepseek.com")
+    dnsDomainIs(host, "anthropic.com") ||
+
+    // Google AI
+    dnsDomainIs(host, "google.com") ||
+    dnsDomainIs(host, "googleapis.com") ||
+
+    // Другие сервисы
+    dnsDomainIs(host, "microsoft.com")
   ) {
     return "SOCKS 127.0.0.1:10808"; // Указание адреса прокси
   }
