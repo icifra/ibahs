@@ -2,53 +2,120 @@
 
 Этот файл предоставляет руководство для Claude Code (claude.ai/code) при работе с кодом в этом репозитории.
 
+## Содержание
+
+1. [Системный промпт для разработки](#системный-промпт-для-разработки)
+2. [Быстрый старт](#быстрый-старт)
+3. [Git Workflow](#git-workflow-для-claude-code)
+4. [Архитектура проекта](#архитектура-проекта)
+5. [Требования к среде](#требования-к-среде)
+6. [Стратегия развития](#стратегия-развития-проекта)
+
 ## Системный промпт для разработки
 
 Ты элитный архитектор ПО, создающий безупречный production-ready код. Давай краткие, но исчерпывающие ответы, всегда начинай с прямого решения задачи. Код должен быть идеально оптимизирован (performance, память, scalability), абсолютно надёжен (отказоустойчивость, security), кристально чист (SOLID, DRY, KISS) и полностью готов к production. Перед кодированием уточняй неясные требования. Каждое решение сопровождай только критически важными комментариями и сжатым обоснованием подхода. Документируй только существенное, фокусируйся на ключевых деталях implementation. Testability, security и scalability обязательны. Поддерживай баланс между лаконичностью и понятностью. Цель: создавать образцовый код высочайшего класса.
 
-## Стратегия развития проекта
+## Быстрый старт
 
-**ТЕКУЩЕЕ СОСТОЯНИЕ**: Лаборатория (backend: NestJS/Fastify, frontend: Bootstrap/Vanilla JS)  
-**ЦЕЛЬ**: Масштабируемая платформа с продажей ИИ по подписке (API/SDK), мини-YouTube блогом, wiki-блогом
+### Основные команды Backend
+```bash
+cd backend/
+npm install                 # Установка зависимостей
+npm run start:dev          # Запуск в режиме разработки
+npm run build              # Сборка для production
+npm run lint               # Проверка кода
+npm run test               # Запуск тестов
+```
 
-### Ключевые технические решения:
-- **Backend**: Сохраняем NestJS/Fastify (надёжная основа)
-- **Frontend**: Переход на Next.js + React (компонентная архитектура, routing, SSR/SSG для SEO)  
-- **Стилизация**: Tailwind CSS (максимальная гибкость для кастомного дизайна)
-- **Деплой**: Постепенный захват через Nginx пути (/blog, /account, /videos → Next.js app, / → legacy app)
+### Переменные окружения
+```bash
+# Обязательные переменные (backend/.env)
+SESSION_SECRET=your_secret_key_here
+GEMINI_API_KEY=your_gemini_api_key
+PORT=3001
+NODE_ENV=development
+```
 
-**ТЕКУЩИЙ ФОКУС**: Реализация первого нового раздела (/blog) на Next.js, настройка Nginx routing, освоение Next.js + Tailwind + API integration.
+## Git Workflow для Claude Code
+
+### Правила коммитов
+- **Принцип**: Информативность + краткость - четко указывать ЧТО сделано
+- **Формат**: `git commit -m "Действие + конкретные детали"`
+- **Примеры**: 
+  - "Обновлены зависимости: NestJS ^11.0.7, Fastify ^13.0.2"
+  - "Исправлена ошибка валидации email в AuthController"
+  - "Добавлен API эндпоинт GET /api/users/:id"
+  - "Реализован модуль аутентификации с JWT токенами"
+- **БЕЗ**: автоподписей, эмоджи, неинформативных фраз
+
+### Команды
+```bash
+git add <файлы>
+git commit -m "Конкретное описание изменений"
+git push origin main
+```
 
 ## Архитектура проекта
 
-### Общая структура
+### Структура репозитория
 ```
 shifry/
-├── backend/          # NestJS API сервер
-├── frontend/         # Статический фронтенд (текущий)
-└── CLAUDE.md        # Документация для ассистента
+├── .github/                    # GitHub Actions CI/CD
+│   └── workflows/
+│       ├── deploy-backend.yml
+│       └── deploy-static-frontend.yml
+├── .gitignore                  # Правила игнорирования
+├── backend/                    # NestJS API сервер
+│   ├── src/
+│   │   ├── ai/                # AI модули (Gemini интеграция)
+│   │   ├── types/             # TypeScript типы
+│   │   ├── main.ts            # Точка входа
+│   │   └── app.module.ts      # Корневой модуль
+│   ├── test/                  # E2E тесты
+│   ├── package.json           # Зависимости и скрипты
+│   └── tsconfig.json          # Конфигурация TypeScript
+├── frontend/                   # Статический фронтенд
+│   ├── css/                   # Стили (Bootstrap + кастомные)
+│   ├── javascript/            # ES6 модули
+│   ├── images/                # Статические ресурсы
+│   └── index.html             # Главная страница
+└── CLAUDE.md                   # Документация для ассистента
 ```
+
+## Требования к среде
+
+### Версии платформы
+- **Node.js**: `>=22.14.0` (контролируется в `backend/package.json`)
+- **npm**: `>=10.9.2` (контролируется в `backend/package.json`)
+
+### Ключевые зависимости
+- **NestJS**: `^11.0.x` (framework)
+- **Fastify**: `^13.0.x` (HTTP server, не Express)
+- **Google Gemini**: `^0.13.x` (AI API)
+- **TypeScript**: `^5.7.x` (строгая типизация)
+- **Bootstrap**: `5.x` (CSS framework)
+
+### Файлы контроля версий
+- `backend/package.json` - engines.node, engines.npm
+- `backend/tsconfig.json` - TypeScript конфигурация
+- `.gitignore` - правила игнорирования файлов
 
 ### Backend (NestJS/Fastify)
 
 #### Технический стек
-- **Фреймворк**: NestJS 11+ с Fastify адаптером (performance-первый подход)
-- **Платформа**: Node.js 22.14.0, npm 10.9.2 (строго)
+- **Фреймворк**: NestJS ^11.0.x с Fastify адаптером (performance-первый подход)
 - **TypeScript**: Строгая конфигурация с пользовательскими типами в `src/types/`
 - **Валидация**: class-validator + class-transformer с глобальными pipes
 - **Безопасность**: Fastify Helmet, CORS, защищённые сессии с httpOnly cookies
+- **AI интеграция**: Google Gemini API ^0.13.x с контролем сессий
 
-#### Основные команды
+#### Дополнительные команды
 ```bash
-# Из директории backend/
-npm run build           # Сборка TypeScript → JavaScript
-npm run start:dev      # Режим разработки с hot reload
-npm run start:prod     # Production запуск
-npm run lint           # ESLint с автофиксом
-npm run test           # Unit тесты (Jest)
+# Расширенные команды (основные см. в разделе "Быстрый старт")
 npm run test:watch     # Тесты в watch режиме
 npm run test:cov       # Покрытие кода
 npm run test:e2e       # End-to-end тестирование
+npm run start:debug    # Запуск с отладкой
 ```
 
 #### Архитектура модулей
@@ -180,26 +247,20 @@ frontend/
 - Минификация статических ресурсов
 - CDN для медиа файлов
 
-## Git Workflow для Claude Code
+## Стратегия развития проекта
 
-### Правила коммитов
-- **Принцип**: Информативность + краткость - четко указывать ЧТО сделано
-- **Формат**: `git commit -m "Действие + конкретные детали"`
-- **Примеры**: 
-  - "Обновлены зависимости: NestJS 11.0.7, Fastify 5.3.2"
-  - "Исправлена ошибка валидации email в AuthController"
-  - "Добавлен API эндпоинт GET /api/users/:id"
-  - "Реализован модуль аутентификации с JWT токенами"
-- **БЕЗ**: автоподписей, эмоджи, неинформативных фраз
+**ТЕКУЩЕЕ СОСТОЯНИЕ**: Лаборатория (backend: NestJS/Fastify, frontend: Bootstrap/Vanilla JS)  
+**ЦЕЛЬ**: Масштабируемая платформа с продажей ИИ по подписке (API/SDK), мини-YouTube блогом, wiki-блогом
 
-### Команды
-```bash
-git add <файлы>
-git commit -m "Конкретное описание изменений"
-git push origin main
-```
+### Ключевые технические решения
+- **Backend**: Сохраняем NestJS/Fastify (надёжная основа)
+- **Frontend**: Переход на Next.js + React (компонентная архитектура, routing, SSR/SSG для SEO)  
+- **Стилизация**: Tailwind CSS (максимальная гибкость для кастомного дизайна)
+- **Деплой**: Постепенный захват через Nginx пути (/blog, /account, /videos → Next.js app, / → legacy app)
 
-## Следующие шаги разработки
+**ТЕКУЩИЙ ФОКУС**: Реализация первого нового раздела (/blog) на Next.js, настройка Nginx routing, освоение Next.js + Tailwind + API integration.
+
+### Следующие шаги развития
 
 1. **Создание Next.js приложения** для нового функционала
 2. **Настройка Nginx** для роутинга между legacy и новым приложением  
