@@ -82,7 +82,7 @@ export class GeminiTextChatService {
 
       // Формирование конфигурации для генерации контента.
       // Объединяет generationConfig и safetySettings из DTO.
-      let effectiveConfig: GenerateContentConfig = {}; 
+      const effectiveConfig: GenerateContentConfig = {}; 
 
       if (requestDto.generationConfig && Object.keys(requestDto.generationConfig).length > 0) {
         Object.assign(effectiveConfig, requestDto.generationConfig);
@@ -134,9 +134,10 @@ export class GeminiTextChatService {
       // для предоставления специфических сообщений пользователю.
       const errorMessage = error instanceof Error ? error.message : String(error);
       console.error('Error in GeminiTextChatService chat:', errorMessage, error);
-      // @ts-ignore - для доступа к error.response.data, если это ошибка от Axios-подобного клиента
-      if (error.response && error.response.data) {
-        // @ts-ignore
+      // Проверка наличия response данных для HTTP ошибок
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (error?.response?.data) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         console.error('API Error Details:', error.response.data);
       }
       throw new InternalServerErrorException(
