@@ -57,6 +57,7 @@ shifry/
 ├── backend/              # NestJS/Fastify API
 │   ├── src/ai/          # Gemini AI интеграция
 │   ├── src/types/       # TypeScript типы
+│   ├── .nvmrc           # Версия Node.js для fnm/nvm
 │   └── package.json     # Зависимости, команды
 ├── frontend/             # Bootstrap/Vanilla JS
 │   ├── javascript/      # ES6 модули
@@ -69,7 +70,7 @@ shifry/
 
 #### Backend (NestJS/Fastify)
 - **Framework**: NestJS ^11.0.x + Fastify (не Express)
-- **Platform**: Node.js >=22.14.0, npm >=10.9.2
+- **Platform**: Node.js >=22.17.0, npm >=10.9.2
 - **AI**: Google Gemini API ^0.13.x с сессиями
 - **Security**: Helmet, CORS, httpOnly cookies
 - **Validation**: class-validator + class-transformer
@@ -118,6 +119,6 @@ shifry/
 5. Система подписок и монетизация
 
 ### Контроль версий
-- **Node.js**: >=22.14.0 (backend/package.json)
+- **Node.js**: >=22.17.0 (backend/package.json, backend/.nvmrc)
 - **Dependencies**: ^major.minor.x (гибкие patch версии)
 - **CI/CD**: GitHub Actions для деплоя
