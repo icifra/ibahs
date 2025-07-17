@@ -45,7 +45,7 @@ jobs:
         # working-directory: ./backend (уже установлено в defaults)
 
       - name: 🚚 Upload Package to VPS
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
@@ -55,7 +55,7 @@ jobs:
           # working-directory: . # Явно указываем, чтобы source path был корректен (если defaults не сработал на scp-action)
 
       - name: 🚀 Execute Deployment Script on VPS
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
