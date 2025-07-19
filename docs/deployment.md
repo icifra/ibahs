@@ -1,15 +1,43 @@
 # Деплой и CI/CD
 
-> Документ для размещения заметок о деплое проекта
+## Обзор
+Автоматический деплой через GitHub Actions с Blue-Green стратегией для backend и rsync для frontend.
 
-## CI/CD процессы
+## Архитектура
+```
+/var/www/shifry/
+├── backend/current -> releases/20241219123045/  # Symlink на активный релиз
+└── static_frontend/                             # Статические файлы
+```
 
-*Будет заполнено при переносе заметок*
+## GitHub Actions
+- `deploy-backend.yml` - NestJS деплой с версионированием
+- `deploy-static-frontend.yml` - статические файлы через rsync
 
-## VPS настройка
+Детали: [.github/workflows/README.md](../.github/workflows/README.md)
 
-*Будет заполнено при переносе заметок*
+## Конфигурация
 
-## Nginx конфигурация
+### Systemd сервис
+```ini
+WorkingDirectory=/var/www/shifry/backend/current
+```
 
-*Будет заполнено при переносе заметок*
+### Nginx
+```nginx
+root /var/www/shifry/static_frontend;
+```
+
+### Продакшен переменные
+```bash
+# /var/www/shifry/backend/shared/.env
+NODE_ENV=production
+PORT=3001
+GEMINI_API_KEY=продакшен_ключ
+SESSION_SECRET=секрет_сессии
+```
+
+## Troubleshooting
+- **Backend сбой:** проверить `backend/.nvmrc`, `journalctl -u backend.service`
+- **Frontend сбой:** проверить наличие `rsync`, права на директории
+- **SSH проблемы:** проверить ключи в GitHub Secrets
