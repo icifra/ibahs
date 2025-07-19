@@ -1,23 +1,29 @@
-# Архитектура проекта Shifry
+# Архитектура проекта
 
-> Документ создан для размещения заметок об архитектуре проекта
+## Общая структура
+```
+shifry/
+├── backend/          # NestJS API + Gemini AI
+├── frontend/         # Bootstrap + Vanilla JS
+├── docs/            # Техническая документация
+└── .github/workflows/ # CI/CD автоматизация
+```
 
-## Общий обзор
-
-*Этот раздел будет заполнен при переносе заметок*
-
-## Технический стек
+## Технологии
 
 ### Backend
-- NestJS + Fastify
-- Google Gemini AI API
-- Node.js >=22.17.0
+- **Framework:** NestJS + Fastify
+- **AI:** Google Gemini API
+- **Node.js:** ≥22.17.0
+- **Деплой:** GitHub Actions → VPS
 
-### Frontend  
-- Bootstrap 5 (текущий)
-- Vanilla JavaScript ES6
-- Планируется: миграция на Next.js
+### Frontend
+- **Текущий:** Bootstrap 5 + Vanilla JS
+- **Планируется:** Next.js + Tailwind CSS (см. roadmap.md)
 
-## Модули
+## Деплой архитектура
+- **Backend:** Blue-Green через symlinks
+- **Frontend:** rsync статических файлов
+- **VPS структура:** `/var/www/shifry/{backend/current,static_frontend}`
 
-*Детали будут добавлены при переносе заметок*
+Подробности в соответствующих модульных README.md
