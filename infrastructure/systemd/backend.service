@@ -1,0 +1,26 @@
+[Unit]
+Description=NestJS Backend Service
+After=network.target
+
+[Service]
+Type=simple
+User=dos
+Group=dos
+WorkingDirectory=/var/www/shifry/backend/current
+ExecStart=/usr/local/bin/node-fnm-wrapper dist/main.js
+Restart=always
+RestartSec=10
+StandardOutput=append:/var/log/backend.log
+StandardError=append:/var/log/backend.error.log
+
+# Переменные окружения
+Environment=NODE_ENV=production
+Environment=PATH=/home/dos/.local/share/fnm:/usr/local/bin:/usr/bin:/bin
+
+# Настройки безопасности
+NoNewPrivileges=true
+ProtectSystem=full
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
