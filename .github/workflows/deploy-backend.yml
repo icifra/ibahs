@@ -113,7 +113,8 @@ jobs:
 
             # 6. Basic health check & rollback on failure
             echo "INFO: Verifying service status (waiting 5s)..."
-            sleep 5 
+            sleep 5
+            set +e # Disable auto-exit for health check and rollback logic
             if systemctl is-active --quiet backend.service; then
               echo "SUCCESS: backend.service is active."
             else
