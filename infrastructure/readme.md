@@ -15,7 +15,7 @@
 - **Frontend**: Статические файлы в `/var/www/shifry/static_frontend/`
 - **Прокси**: xray-core через iptables NAT для Gemini API
 
-## Структура репозитория
+## Структура конфигураций
 
 ```
 infrastructure/
@@ -30,6 +30,27 @@ infrastructure/
 │           └── shifry.conf       # API маршрутизация
 └── systemd/
     └── backend.service           # Systemd сервис backend
+```
+
+### GeoIP2 модуль
+Извлекает геолокацию по IP, передает в frontend через заголовки `X-Country-Name`, `X-City`.
+
+**База данных**: https://github.com/P3TERX/GeoLite.mmdb (автообновляется)  
+**Путь**: `/etc/nginx/geoip/GeoLite2-City.mmdb`
+
+**Установка модуля (Debian 12):**
+```bash
+sudo apt install libnginx-mod-http-geoip2
+sudo systemctl restart nginx
+```
+
+**Обновление базы:**
+```bash
+wget -O GeoLite2-City.mmdb https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-City.mmdb
+sudo mv GeoLite2-City.mmdb /etc/nginx/geoip/
+sudo chown www-data:www-data /etc/nginx/geoip/GeoLite2-City.mmdb
+sudo chmod 644 /etc/nginx/geoip/GeoLite2-City.mmdb
+sudo systemctl reload nginx
 ```
 
 ## Процедуры управления
