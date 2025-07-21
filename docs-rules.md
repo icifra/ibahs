@@ -15,27 +15,27 @@
 - `development.md` - setup для разработчиков
 - `api-reference.md` - API документация
 
-### Модульные `README.md` - рядом с кодом
+### Модульные `readme.md` - рядом с кодом
 Создаем только если есть специфичная информация:
-- `backend/README.md` - как запустить backend
-- `backend/src/ai/gemini/README.md` - Gemini API специфика
-- `frontend/README.md` - frontend setup
-- `.github/workflows/README.md` - CI/CD процессы
+- `backend/readme.md` - как запустить backend
+- `backend/src/ai/gemini/readme.md` - Gemini API специфика
+- `frontend/readme.md` - frontend setup
+- `.github/workflows/readme.md` - CI/CD процессы
 
 ## Правило размещения
 
 **Спроси:** "Где разработчик будет это искать?"
 
 - **Про весь проект** → `docs/`
-- **Про конкретный модуль** → README.md в папке модуля
+- **Про конкретный модуль** → readme.md в папке модуля
 
 ## Примеры для Shifry
 
 ### ✅ Правильно:
 - Архитектура NestJS + Next.js → `docs/architecture.md`
-- Настройка Gemini API → `backend/src/ai/gemini/README.md`
-- Bootstrap компоненты → `frontend/README.md` 
-- GitHub Actions → `.github/workflows/README.md`
+- Настройка Gemini API → `backend/src/ai/gemini/readme.md`
+- Bootstrap компоненты → `frontend/readme.md` 
+- GitHub Actions → `.github/workflows/readme.md`
 - План миграции → `docs/migration-plan.md`
 
 ### ❌ Неправильно:
@@ -46,13 +46,21 @@
 
 При переносе заметок:
 1. **Определить тип:** общая заметка или про конкретный модуль?
-2. **Выбрать файл:** `docs/[тема].md` или `[модуль]/README.md` 
+2. **Выбрать файл:** `docs/[тема].md` или `[модуль]/readme.md` 
 3. **Заполнить реальным содержимым** (не шаблонами)
 4. **НЕ создавать** файлы без реального содержимого
+
+## Правила именования файлов
+
+### Названия файлов в нижнем регистре
+- **Всегда:** `readme.md` (не `README.md`)  
+- **Причина:** Совместимость с различными ОС и соглашениями Unix
+- **Исключения:** нет
 
 ## Антипаттерны (НЕ делать)
 
 ❌ Создавать пустые файлы "на будущее"  
 ❌ Дублировать информацию из кода  
 ❌ Документировать очевидные вещи  
-❌ Создавать избыточную структуру папок
+❌ Создавать избыточную структуру папок  
+❌ Использовать заглавные буквы в именах файлов документации

@@ -26,4 +26,4 @@ shifry/
 - **Frontend:** rsync статических файлов
 - **VPS структура:** `/var/www/shifry/{backend/current,static_frontend}`
 
-Подробности в соответствующих модульных README.md
+Подробности в соответствующих модульных readme.md

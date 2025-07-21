@@ -14,7 +14,7 @@
 - `deploy-backend.yml` - NestJS деплой с версионированием
 - `deploy-static-frontend.yml` - статические файлы через rsync
 
-Детали: [.github/workflows/README.md](../.github/workflows/README.md)
+Детали: [.github/workflows/readme.md](../.github/workflows/readme.md)
 
 ## Конфигурация
 
