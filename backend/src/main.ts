@@ -85,4 +85,5 @@ async function bootstrap() {
 }
 
 void bootstrap();
-// trigger CI
+// TEST: Намеренная ошибка для тестирования механизма отката
+process.exit(1); // Принудительное завершение с ошибкой
