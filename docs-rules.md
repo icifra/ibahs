@@ -36,7 +36,7 @@
 - Настройка Gemini API → `backend/src/ai/gemini/readme.md`
 - Bootstrap компоненты → `frontend/readme.md` 
 - GitHub Actions → `.github/workflows/readme.md`
-- План миграции → `docs/migration-plan.md`
+- Планы развития → `roadmap.md`
 
 ### ❌ Неправильно:
 - ~~`backend/docs/gemini.md`~~ (избыточная вложенность)

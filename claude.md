@@ -36,12 +36,17 @@ shifry/
 │   ├── tsconfig.json          # TypeScript конфигурация
 │   ├── eslint.config.mjs      # ESLint конфигурация
 │   └── nest-cli.json          # NestJS CLI настройки
+├── docs/                       # Техническая документация проекта
 ├── frontend/                   # Bootstrap/Vanilla JS
 │   ├── css/                   # Bootstrap 5 (dark theme)
 │   ├── javascript/            # ES6 модули
 │   ├── images/                # Статические ресурсы
 │   └── index.html             # SPA главная страница
-└── claude.md                  # Документация проекта
+├── infrastructure/            # Nginx, systemd, инфраструктура
+├── context.md                  # Буфер контекстной информации для ИИ-ассистента
+├── docs-rules.md               # Правила ведения документации проекта
+├── roadmap.md                  # Планы развития и стратегические цели
+└── claude.md                  # Инструкции для Claude Code
 ```
 
 ## Технологический стек

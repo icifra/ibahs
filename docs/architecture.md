@@ -5,6 +5,7 @@
 shifry/
 ├── backend/          # NestJS API + Gemini AI
 ├── frontend/         # Bootstrap + Vanilla JS
+├── infrastructure/   # Nginx, systemd, GeoIP2
 ├── docs/            # Техническая документация
 └── .github/workflows/ # CI/CD автоматизация
 ```

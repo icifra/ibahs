@@ -14,9 +14,10 @@ curl -fsSL https://fnm.vercel.app/install | bash
 source ~/.bashrc
 
 # Установка нужной версии Node.js (из backend/.nvmrc)
-fnm install $(cat backend/.nvmrc)
-fnm default $(cat backend/.nvmrc)
-fnm use $(cat backend/.nvmrc)
+NODE_VERSION=$(cat backend/.nvmrc)
+fnm install $NODE_VERSION
+fnm default $NODE_VERSION
+fnm use $NODE_VERSION
 
 # Проверка версий
 node -v  # должно показать версию из backend/.nvmrc
