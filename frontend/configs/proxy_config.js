@@ -9,10 +9,17 @@ function FindProxyForURL(url, host) {
     // Claude/Anthropic
     dnsDomainIs(host, "claude.ai") ||
     dnsDomainIs(host, "anthropic.com") ||
+    dnsDomainIs(host, "stripe.com") ||
+    dnsDomainIs(host, "amazonaws.com") ||
 
     // Google AI
     dnsDomainIs(host, "google.com") ||
     dnsDomainIs(host, "googleapis.com") ||
+
+    // Corsair/Akamai CDN
+    dnsDomainIs(host, "corsair.com") ||
+    dnsDomainIs(host, "corsairgaming.com") ||
+    dnsDomainIs(host, "akamaitechnologies.com") ||
 
     // Другие сервисы
     dnsDomainIs(host, "microsoft.com")
