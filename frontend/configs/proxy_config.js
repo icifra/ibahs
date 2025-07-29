@@ -16,11 +16,6 @@ function FindProxyForURL(url, host) {
     dnsDomainIs(host, "google.com") ||
     dnsDomainIs(host, "googleapis.com") ||
 
-    // Corsair/Akamai CDN
-    dnsDomainIs(host, "corsair.com") ||
-    dnsDomainIs(host, "corsairgaming.com") ||
-    dnsDomainIs(host, "akamaitechnologies.com") ||
-
     // Другие сервисы
     dnsDomainIs(host, "microsoft.com")
   ) {
