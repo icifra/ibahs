@@ -30,7 +30,7 @@ shifry/
 ├── .github/workflows/          # CI/CD автоматизация
 ├── .gitignore                  # Правила игнорирования
 ├── backend/                    # NestJS/Fastify API
-│   ├── .nvmrc                 # Node.js 22.17.0
+│   ├── .nvmrc                 # Node.js 22.20.0
 │   ├── src/ai/                # Gemini AI интеграция
 │   │   └── gemini/            # Text-chat API
 │   ├── src/types/             # TypeScript типы
@@ -55,7 +55,7 @@ shifry/
 
 ### Backend
 - **Framework**: NestJS ^11.0.1 + Fastify adapter
-- **Platform**: Node.js >=22.17.0, npm >=10.9.2
+- **Platform**: Node.js >=22.20.0, npm >=10.9.3
 - **AI**: Google Gemini API ^1.9.0
 - **Security**: Helmet, CORS, session management
 - **Validation**: class-validator + class-transformer

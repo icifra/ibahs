@@ -1,8 +1,8 @@
 # Руководство по разработке
 
 ## Требования системы
-- **Node.js:** версия из `backend/.nvmrc` (текущая: ≥22.17.0)
-- **npm:** ≥10.9.2
+- **Node.js:** версия из `backend/.nvmrc` (текущая: ≥22.20.0)
+- **npm:** ≥10.9.3
 - **Среда:** Linux/WSL2 (Windows через WSL)
 
 ## Быстрый старт
@@ -21,7 +21,7 @@ fnm use $NODE_VERSION
 
 # Проверка версий
 node -v  # должно показать версию из backend/.nvmrc
-npm -v   # должно показать ≥10.9.2
+npm -v   # должно показать ≥10.9.3
 ```
 
 ### 2. Установка зависимостей
@@ -76,7 +76,7 @@ npm run test
 
 ## Технологический стек
 - **Framework:** NestJS ^11.0.1 + Fastify
-- **Node.js:** ≥22.17.0 (см. `backend/.nvmrc`)
+- **Node.js:** ≥22.20.0 (см. `backend/.nvmrc`)
 - **Валидация:** class-validator + class-transformer
 - **AI:** Google Gemini API ^1.9.0
 - **Сессии:** HTTP-only cookies, 30 мин таймаут
@@ -115,9 +115,9 @@ npm run lint            # ESLint проверка + автофикс
 **Проблема:** Неправильная версия Node.js
 ```bash
 # Решение
-fnm use 22.17.0
+fnm use 22.20.0
 # или
-fnm default 22.17.0
+fnm default 22.20.0
 ```
 
 **Проблема:** fnm команды не найдены

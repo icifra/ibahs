@@ -15,7 +15,7 @@ shifry/
 ### Backend
 - **Framework:** NestJS + Fastify
 - **AI:** Google Gemini API
-- **Node.js:** ≥22.17.0
+- **Node.js:** ≥22.20.0
 - **Деплой:** GitHub Actions → VPS
 
 ### Frontend
