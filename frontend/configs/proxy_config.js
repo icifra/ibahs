@@ -10,8 +10,12 @@ function FindProxyForURL(url, host) {
     dnsDomainIs(host, "claude.ai") ||
     dnsDomainIs(host, "anthropic.com") ||
     dnsDomainIs(host, "stripe.com") ||
-    dnsDomainIs(host, "amazonaws.com") ||
 
+    // AWS (общее + специфичные регионы)
+    dnsDomainIs(host, "amazonaws.com") ||
+    dnsDomainIs(host, "compute-1.amazonaws.com") ||
+    shExpMatch(host, "*.compute-*.amazonaws.com") ||
+    
     // Google AI
     dnsDomainIs(host, "google.com") ||
     dnsDomainIs(host, "googleapis.com") ||
